@@ -1,0 +1,41 @@
+package cn.wwwwy.tribune.controller;
+
+
+import cn.wwwwy.tribune.entity.User;
+import cn.wwwwy.tribune.service.IUserService;
+import cn.wwwwy.tribune.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * <p>
+ *  前端控制器
+ * </p>
+ *
+ * @author wwwwy
+ * @since 2019-11-23
+ */
+@RestController
+@RequestMapping("/user")
+public class UserController {
+	@Autowired
+	private IUserService iUserService;
+	@PostMapping("login")
+	public Result<String> toLogin(String username, String password){
+		return iUserService.login(username,password);
+	}
+
+	@PostMapping("register")
+	public Result<String> toRegister(User user){
+		return iUserService.register(user);
+	}
+	@GetMapping("checkEmail/{email}")
+	public Result<Boolean> checkEmail(@PathVariable String email){
+		return iUserService.checkEmail(email);
+	}
+	@GetMapping("checkUserName/{userName}")
+	public Result<Boolean> checkUserName(@PathVariable String userName){
+		return iUserService.checkUserName(userName);
+	}
+}
