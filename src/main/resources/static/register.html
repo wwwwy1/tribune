@@ -36,13 +36,11 @@
                     <input type="text" class="form-control" placeholder="请输入用户名,用于登录" id="userName" required="">
                 </div>
                 <div class="form-group">
-                    <input type="email" onblur="checkUserName()" class="form-control" placeholder="请输入验证邮箱" id="userEmail" required="">
+                    <input type="email" class="form-control" placeholder="请输入验证邮箱" id="userEmail" required="">
                 </div>
-                <input type="hidden" id="checkEmail" value="0">
-                <input type="hidden" id="checkUserName" value="0">
 
                 <div class="form-group">
-                    <input type="password" onfocus="checkEmailIsExist()" class="form-control" placeholder="请输入密码" id="userPassword" required="">
+                    <input type="password"class="form-control" placeholder="请输入密码" id="userPassword" required="">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" placeholder="请再次输入密码" id="reUserPassword" required="">
@@ -75,78 +73,88 @@
             });
         });
         function register() {
-            var flag = true;
             var userName = $("#userName").val();
             var userPassword = $("#userPassword").val();
             var reUserPassword = $("#reUserPassword").val();
             var userEmail = $("#userEmail").val();
-            var
             if (userName == null || userName == ""){
                 alert("用户名必填！");
                 $("#userName").focus();
-                flag = false;
+                return;
             }
+            /*var a1 =checkUserName(userName);
+            if (!a1) {
+                alert("用户名已被注册")
+                return;
+            }*/
+
             if (userPassword == null || userPassword == ""){
                 alert("密码必填！");
                 $("#userPassword").focus();
-                flag = false;
+                return;
             }
             var myreg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
             if(userEmail ==''){
                 alert("邮箱不能为空！");
-                flag = false;
+                return;
             }else if(!myreg.test(userEmail)){
                 alert("请输入有效的邮箱地址！");
-                flag = false;
-            }
+                return;
+            }/*else if (!checkEmailIsExist(userEmail)) {
+                alert("邮箱已被注册");
+                return;
+            }*/
             if (reUserPassword != userPassword) {
                 alert("两次密码需要相同！");
                 $("#userPassword").val("");
                 $("#reUserPassword").val("");
                 $("#userPassword").focus();
-                flag = false;
+                return;
             }
-            if (flag){
-                $.ajax({
-                    url: "/user/register",
-                    data:{"userName":userName,"userPassword":userPassword,"userEmail":userEmail},
-                    type: "post",
-                    dataType: "json",
-                    success: function (data) {
-                        alert(data.data)
-
+            $.ajax({
+                url: "/user/register",
+                data:{"userName":userName,"userPassword":userPassword,"userEmail":userEmail},
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    alert(data.msg);
+                    if (data.code == 200){
+                        $("#userName").val("");
+                        $("#userPassword").val("");
+                        $("#reUserPassword").val("");
+                        $("#userEmail").val("");
+                        alert("现在您可以登录了");
                     }
-                })
-            }
+                }
+            })
         }
-        function checkEmailIsExist(userEmail) {
+        /*function checkEmailIsExist(userEmail) {
             $.ajax({
                 url: "/user/checkEmail/" + userEmail,
                 type: "get",
                 dataType: "json",
                 success: function (data) {
-                    debugger;
-                    alert(JSON.stringify(data))
-
+                    if (data.code == 200)
+                        return true;
+                    else 
+                        return false;
                 }
             })
-        }
-        function checkUserName(userName) {
+        }*/
+        /*function checkUserName(userName) {
             $.ajax({
                 url: "/user/checkUserName/" + userName,
                 type: "get",
                 dataType: "json",
                 success: function (data) {
-                    debugger
-                    alter(data)
-                    if (data.code == "0"){
+                    alert(JSON.stringify(data));
+                    if (data.code == 200)
                         return true;
-                    }else {
+                    else
                         return false;
-                    }
                 }
             })
-        }
+        }*/
     </script>
 
     

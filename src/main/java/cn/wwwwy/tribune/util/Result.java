@@ -1,37 +1,17 @@
 package cn.wwwwy.tribune.util;
 
-public class Result<T> {
-	private int code;
+import lombok.Data;
+
+@Data
+public class Result {
 	private String msg;
-	private T data;
+	private Integer code;
+	private Object data;
 
-	/**
-	 *  成功时候的调用
-	 * */
-	public static  <T> Result<T> success(T data){
-		return new Result<T>(data);
-	}
 
-	/**
-	 *  失败时候的调用
-	 * */
-	public static  <T> Result<T> error(CodeMsg codeMsg){
-		return new Result<T>(codeMsg);
-	}
-
-	private Result(T data) {
-		this.data = data;
-	}
-
-	private Result(int code, String msg) {
-		this.code = code;
+	public Result(String msg, Integer code, Object data) {
 		this.msg = msg;
-	}
-
-	private Result(CodeMsg codeMsg) {
-		if(codeMsg != null) {
-			this.code = codeMsg.getCode();
-			this.msg = codeMsg.getMsg();
-		}
+		this.code = code;
+		this.data = data;
 	}
 }

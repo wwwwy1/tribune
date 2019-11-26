@@ -13,9 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2019-11-23
  */
 public interface IUserService extends IService<User> {
-	public Result<String> login(String username, String password);
-	public Result<String> register(User user);
-	public Result<Boolean> checkEmail(String email);
-	public Result<Boolean> checkUserName(String userName);
+	public Result login(String username, String password);
+	public Result register(User user);
+	//public Result checkEmail(String email);
+	//public Result checkUserName(String userName);
 
 }

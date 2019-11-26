@@ -22,20 +22,20 @@ public class UserController {
 	@Autowired
 	private IUserService iUserService;
 	@PostMapping("login")
-	public Result<String> toLogin(String username, String password){
+	public Result toLogin(String username, String password){
 		return iUserService.login(username,password);
 	}
 
 	@PostMapping("register")
-	public Result<String> toRegister(User user){
+	public Result toRegister(User user){
 		return iUserService.register(user);
 	}
-	@GetMapping("checkEmail/{email}")
-	public Result<Boolean> checkEmail(@PathVariable String email){
+	/*@GetMapping("checkEmail/{email}")
+	public Result checkEmail(@PathVariable String email){
 		return iUserService.checkEmail(email);
 	}
 	@GetMapping("checkUserName/{userName}")
-	public Result<Boolean> checkUserName(@PathVariable String userName){
+	public Result checkUserName(@PathVariable String userName){
 		return iUserService.checkUserName(userName);
-	}
+	}*/
 }
