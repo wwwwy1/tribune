@@ -1,15 +1,13 @@
 package cn.wwwwy.tribune.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
 * <p>
@@ -113,21 +111,21 @@ import java.time.LocalDateTime;
             /**
             * 最后登录时间
             */
-        @TableField("user_last_time")
-    private LocalDateTime userLastTime;
+        @TableField(value = "update_date",fill = FieldFill.UPDATE)
+    private LocalDateTime updateDate;
 
             /**
             * 注册时间
             */
-        @TableField("user_register_time")
-    private LocalDateTime userRegisterTime;
+        @TableField(value = "insert_date",fill = FieldFill.INSERT)
+    private LocalDateTime insertDate;
 
             /**
             * 软删除  0:未删除 1:已删除
             */
             @TableLogic
-        @TableField("user_delete")
-    private Integer userDelete;
+        @TableField("is_deleted")
+    private Integer isDeleted;
 
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wwwwy.tribune.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="cn.wwwwy.tribune.entity.User">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="user_nickname" property="userNickname" />
+        <result column="user_img" property="userImg" />
+        <result column="user_password" property="userPassword" />
+        <result column="user_email" property="userEmail" />
+        <result column="user_thumbs" property="userThumbs" />
+        <result column="user_post" property="userPost" />
+        <result column="user_reply" property="userReply" />
+        <result column="user_exp" property="userExp" />
+        <result column="user_level" property="userLevel" />
+        <result column="user_point" property="userPoint" />
+        <result column="user_title" property="userTitle" />
+        <result column="user_check" property="userCheck" />
+        <result column="update_date" property="updateDate" />
+        <result column="insert_date" property="insertDate" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_name, user_nickname, user_img, user_password, user_email, user_thumbs, user_post, user_reply, user_exp, user_level, user_point, user_title, user_check, update_date, insert_date, is_deleted
+    </sql>
+
+</mapper>
