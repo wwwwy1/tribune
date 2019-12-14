@@ -111,13 +111,13 @@
                                         <div class="bars pull-left">
                                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar"
                                                  role="group">
-                                                <button type="button" class="btn btn-outline btn-default">
+                                                <button type="button" class="btn btn-outline btn-default" onclick="goWord()">
                                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline btn-default">
                                                     <i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-outline btn-default">
+                                                <button type="button" class="btn btn-outline btn-default" onclick="goDeletes()">
                                                     <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                                                 </button>
                                             </div>
@@ -343,13 +343,71 @@
 <script src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
 <script src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
 <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/plugins/layer/layer.min.js" type="text/javascript"></script>
+<link href="css/openDiv.css" rel="stylesheet">
+
+
 
 <!-- Peity -->
 <!--
     <script src="js/demo/bootstrap-table-demo.js"></script>
 -->
-
+<script type="text/javascript">
+    function goWord() {
+        $('#myModal4').modal();
+    }
+</script>
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content news-w3l">
+            <div class="modal-header">
+                <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
+                <h4>每日一言</h4>
+                <!--newsletter-->
+                <div class="login-main wthree">
+                    <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
+                    <input type="submit" onclick="addDailyWord()" value="确认增加">
+                </div>
+                <!--//newsletter-->
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
-
+<script type="text/javascript">
+    function goDeletes() {
+        //获取通用id
+        $.ajax({
+            url: "/dailyWord/deletes",
+            data:{"ids":contentWord,"id":id},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200)
+                    alert("删除成功");
+                else
+                    alert("删除失败");
+            }
+        })
+    }
+    function addDailyWord() {
+        var contentWord = $("#contentWord").val();
+        var id = $("#idWord").val();
+        if (id == -1)
+            id = null;
+        $.ajax({
+            url: "/dailyWord/add",
+            data:{"content":contentWord,"id":id},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200)
+                    alert("添加成功");
+                else
+                    alert("添加失败");
+            }
+        })
+    }
+</script>
 </html>

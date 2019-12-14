@@ -1,0 +1,199 @@
+
+/*--//newsletter--*/
+/*--logins--*/
+.login-main input[type="text"],.newsletter input[type="email"],.login-main input[type="email"] {
+    font-size: 1em;
+    color: #000;
+    padding: 0.7em 0em;
+    margin-bottom: 1em;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #000;
+    font-family: 'Lato', sans-serif;
+	background: Transparent;
+	width: 100%;
+}
+.login-main input[type="text"]{
+	 width: 100%;
+}
+.newsletter input[type="email"]{
+	width:77%;
+}
+.agileits-main input[type="text"],.agileits-main input[type="email"] {
+    font-size: 1em;
+    color: #000;
+    padding: 0.1em 0em;
+    margin-bottom: 1em;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #000;
+    font-family: 'Signika', sans-serif;
+    background: Transparent;
+    width: 51%;
+    margin-left: 0.5em;
+}
+.login-main input[type="password"] {
+    font-size: 1em;
+    color: #000;
+    padding: 0.7em 0em;
+    margin-bottom: 1em;
+    width: 100%;
+    display: inline-block;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #000;
+    font-family: 'Signika', sans-serif;
+	background: Transparent;
+}
+.login-main input[type="submit"] {
+    font-size: 1em;
+    color: #fff;
+    background: #6a67ce;
+    border: none;
+    width: 82%;
+    display: block;
+    padding: 0.7em 1em;
+    text-align: center;
+    margin: 1.5em auto;
+    transition: 0.5s all;
+	-webkit-transition: 0.5s all;
+	-moz-transition: 0.5s all;
+	-o-transition: 0.5s all;
+    outline: none;
+    cursor: pointer;
+	text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.login-main input[type="submit"]:hover{
+    background:rgba(0, 0, 0, 0.82);
+    transition: 0.5s all;
+	-webkit-transition: 0.5s all;
+	-moz-transition: 0.5s all;
+	-o-transition: 0.5s all;
+}
+::-webkit-input-placeholder{
+   color:#000 !important;
+}
+.login-main.wthree {
+    width: 80%;
+    margin: 3em auto;
+}
+.contact-form1 {
+    width: 100%;
+}
+.contact-form1:nth-child(3) {
+    margin-top: 1.2em;
+}
+.agileinfo_footer_grid h4 {
+    font-size: 1.3em;
+}
+.right-agile {
+    padding: 1em 3em;
+}
+.contact-form1 {
+    padding: 0 !important;
+}
+.map h4 {
+    position: absolute;
+    z-index: 9999;
+    right: 35%;
+    background:rgba(0, 0, 0, 0.69);
+    color: #6a67ce;
+    padding: 14px 38px;
+    font-size: 2em;
+    text-transform: capitalize;
+    top: 40%;
+    font-weight: 900;
+}
+.contact-form1 h4,.contact-me h4{
+    font-size:1em;
+    color:#797979;
+    margin:0 0 .5em;
+}
+.contact-form1{
+    padding-right:1em;
+}
+.contact-form{
+    padding:0 !important;
+}
+.contact-form1 input[type="text"],.contact-form1 input[type="email"],.contact-me textarea{
+    outline:none;
+    padding:10px;
+    border:1px solid #B7B7B7;
+    background:#FBFBFB;
+    font-size:1em;
+    color:#999;
+    width:100%;
+}
+.contact-me textarea{
+    min-height:300px;
+    resize:none;
+}
+.contact-me{
+    margin-bottom:1em;
+}
+.contact-grids1 input[type="submit"] {
+    outline: none;
+    padding: 10px 0;
+    border: none;
+    background: #6a67ce;
+    font-size: 1.1em;
+    color: #fff;
+    width: 100%;
+    margin: 1.5em 0 0 0em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.contact-grids1 input[type="submit"]:hover{
+    background:#333;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+}
+.contact-me textarea {
+     min-height: 193px;
+ }
+.contact-form1 input[type="text"], .contact-form1 input[type="email"], .contact-me textarea {
+    padding: 8px;
+}
+.about h1, .services h3, #gallery h3, .team h3, .gallery h3, .event h3, .contact-agile h3 {
+    font-size: 2.7em;
+    margin-bottom: 0.8em;
+}
+.contact-me textarea {
+    min-height: 204px;
+}
+.contact-me textarea {
+    min-height: 125px;
+}
+.contact-me {
+    margin-bottom: 0.5em;
+}
+.contact-form1:nth-child(3) {
+    margin-top: 1em;
+}
+.contact-form1 h4, .contact-me h4 {
+    font-size: 0.9em;
+}
+.button h5, .button2 h5 {
+    font-size: 1.2em;
+}
+.button2 h5 a {
+    color: #333;
+}
+.button2:hover{
+    color: #fff !important;
+    background: #6a67ce;
+    transition: 0.5s all;
+    -webkit-transition: 0.5s all;
+    -o-transition: 0.5s all;
+    -moz-transition: 0.5s all;
+    -ms-transition: 0.5s all;
+}
+.button2 h5 a:hover {
+    color: #fff !important;
+}
