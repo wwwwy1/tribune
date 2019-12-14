@@ -1,0 +1,66 @@
+
+.side-bar a,.chat-tips i {
+	background-image: url(../images/gdt-img.png);
+	background-repeat: no-repeat;
+}
+.side-bar {
+	width: 35px;
+	position: fixed;
+	bottom: 5px;
+	right: 25px;
+	font-size: 0;
+	line-height: 0;
+	z-index: 100;
+}
+.side-bar a {
+	width: 50px;
+	height: 50px;
+	display: inline-block;
+	background-color: #dddddd;
+	margin-bottom: 2px;
+	border-radius: 5px;
+}
+.side-bar a:hover {
+	background-color: #669fdd;
+}
+.side-bar .icon-qq {
+	background-position: -7px -70px;
+	position: relative;
+}
+.side-bar .icon-qq:hover .qq-tips {
+	display: block;
+}
+.side-bar .icon-chat {
+	background-position: -7px -138px;
+	position: relative;
+}
+.side-bar .icon-chat:hover .chat-tips {
+	display: block;
+}
+.side-bar .icon-blog {
+	background-position: -7px -207px;
+}
+.side-bar .icon-mail {
+	background-position: -7px -275px;
+}
+.side-bar .icon-totop {
+	background-position: 0 -334px;
+}
+.chat-tips {
+	padding: 20px;
+	border: 1px solid #d1d2d6;
+	position: absolute;
+	right: 60px;
+	top: -55px;
+	background-color: #ffffff;
+	display: none;
+}
+.qq-tips {
+	padding: 20px;
+	border: 1px solid #d1d2d6;
+	position: absolute;
+	right: 60px;
+	top: -55px;
+	background-color: #ffffff;
+	display: none;
+}/*
