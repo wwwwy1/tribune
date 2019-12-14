@@ -15,7 +15,11 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -35,7 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 	private static Logger log = Logger.getLogger(UserServiceImpl.class);
 
 	@Override
-	public Result login(String username, String password) {
+	public Result login(String username, String password, HttpServletRequest request, HttpServletResponse response) {
 		QueryWrapper<User> byUsername = new QueryWrapper<>();
 		QueryWrapper<User> byEmail = new QueryWrapper<>();
 		byUsername.eq("user_name",username);
@@ -50,8 +54,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		log.info("UserServiceImpl-login: username-" + username + "password-" + password);
 		UUID uuid = UUID.fastUUID();
 		// 登录后,把token返回到前台,并且把token保存到redis中
-		redisTemplate.opsForValue().set(uuid.toString(),userByEmail==null?userByName.getId():userByEmail.getId());
-
+		redisTemplate.opsForValue().set(uuid.toString(),userByEmail==null?userByName.getId():userByEmail.getId(),30,TimeUnit.MINUTES);
+		//request.setAttribute("token",uuid.toString());
+		HttpSession session = request.getSession();
+		session.setAttribute("token",uuid.toString());
 		return new Result("登录成功",200,userByEmail == null?userByName:userByEmail);
 	}
 

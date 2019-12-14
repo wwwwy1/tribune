@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * <p>
  *  前端控制器
@@ -22,8 +25,8 @@ public class UserController {
 	@Autowired
 	private IUserService iUserService;
 	@PostMapping("login")
-	public Result toLogin(String username, String password){
-		return iUserService.login(username,password);
+	public Result toLogin(String username, String password, HttpServletRequest request, HttpServletResponse response){
+		return iUserService.login(username,password,request,response);
 	}
 
 	@PostMapping("register")

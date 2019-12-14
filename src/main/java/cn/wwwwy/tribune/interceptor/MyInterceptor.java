@@ -3,21 +3,30 @@ package cn.wwwwy.tribune.interceptor;
 import io.lettuce.core.dynamic.annotation.CommandNaming;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class MyInterceptor extends HandlerInterceptorAdapter {
 	private final Logger logger = LoggerFactory.getLogger(MyInterceptor.class);
+	@Autowired
+	private RedisTemplate<String,String> redisTemplate;
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		logger.info("request请求地址path[{}] uri[{}]", request.getServletPath(),request.getRequestURI());
-		//request.getHeader(String) 从请求头中获取数据
 		//从请求头中获取用户token（登陆凭证根据业务而定）
-		Long userId= getUserId(request.getHeader("token"));
-		if (userId != null && checkAuth(userId,request.getRequestURI())){
+		String token = (String) request.getSession().getAttribute("token");
+		String userId = "";
+		if (token != null)
+			userId = redisTemplate.opsForValue().get(token);
+		if (userId != null && !userId.equals("")){
+			redisTemplate.opsForValue().set(token,userId,30,TimeUnit.MINUTES);
 			return true;
 		}
 		response.sendRedirect("/401.html");
