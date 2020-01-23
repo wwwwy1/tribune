@@ -8,10 +8,9 @@ import cn.wwwwy.tribune.util.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,11 +23,12 @@ import java.util.List;
  * @author wwwwy
  * @since 2019-12-14
  */
-@RestController
+@Controller
 @RequestMapping("/dailyWord")
 public class DailyWordController extends BaseController {
 	@Autowired
 	private IDailyWordService iDailyWordService;
+	@ResponseBody
 	@PostMapping(value = "add")
 	public Result insertDailyWord(DailyWord dailyWord){
 		if (dailyWord.getId()==null)
@@ -37,6 +37,7 @@ public class DailyWordController extends BaseController {
 			iDailyWordService.updateById(dailyWord);
 		return new Result("成功",200,dailyWord);
 	}
+	@ResponseBody
 	@PostMapping(value = "deletes")
 	public Result deletes(String ids){
 		List<String> idList = Arrays.asList(ids.split(","));
@@ -47,6 +48,7 @@ public class DailyWordController extends BaseController {
 			return new Result("删除失败",500,null);
 		}
 	}
+	@ResponseBody
 	@PostMapping(value = "delete")
 	public Result delete(Integer id){
 		boolean b = iDailyWordService.removeById(id);
@@ -57,9 +59,12 @@ public class DailyWordController extends BaseController {
 		}
 	}
 	@GetMapping(value = "page")
-	public Object page(Integer current,Integer pageSize){
+	public ModelAndView page(Integer current, Integer pageSize, ModelAndView modelAndView){
 		IPage<DailyWord> page = new Page<>(current,pageSize);
 		page = iDailyWordService.page(page);
-		return buildPage(page);
+		modelAndView.getModel().put("data",buildPage(page));
+		modelAndView.setViewName("table_bootstrap");
+		return modelAndView;
+
 	}
 }
