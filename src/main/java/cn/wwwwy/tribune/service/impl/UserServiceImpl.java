@@ -58,7 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		//request.setAttribute("token",uuid.toString());
 		HttpSession session = request.getSession();
 		session.setAttribute("token",uuid.toString());
-		return new Result("登录成功",200,userByEmail == null?userByName:userByEmail);
+		return new Result("登录成功",0,userByEmail == null?userByName:userByEmail);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		}
 		userMapper.insert(user);
 		log.info("UserServiceImpl-register: user" + user);
-		return new Result("注册成功",200,null);
+		return new Result("注册成功",0,null);
 	}
 
 	public Boolean checkEmail(String email) {

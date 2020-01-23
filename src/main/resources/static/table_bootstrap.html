@@ -204,17 +204,21 @@
                                                         <div class="th-inner ">ID</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="name" tabindex="0">
-                                                        <div class="th-inner ">名称</div>
+                                                    <th style="" data-field="content" tabindex="0">
+                                                        <div class="th-inner ">内容</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="price" tabindex="0">
-                                                        <div class="th-inner ">价格</div>
+                                                    <th style="" data-field="insertDate" tabindex="0">
+                                                        <div class="th-inner ">插入时间</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="updateDate" tabindex="0">
+                                                        <div class="th-inner ">更新时间</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="contentBody">
                                                 <tr data-index="0">
                                                     <td class="bs-checkbox"><input data-index="0" name="btSelectItem"
                                                                                    type="checkbox"></td>
@@ -295,7 +299,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="fixed-table-pagination">
+                                        <div class="fixed-table-pagination" id="footerPage">
                                             <div class="pull-left pagination-detail"><span class="pagination-info">显示第 1 到第 10 条记录，总共 21 条记录</span><span
                                                     class="page-list">每页显示 <span class="btn-group dropup"><button
                                                     type="button" class="btn btn-default  btn-outline dropdown-toggle"

@@ -64,7 +64,12 @@
                 type: "post",
                 dataType: "json",
                 success: function (data) {
-                    location.href='http://localhost:8911/index.html'
+                    if (data.code != 0){
+                        alert(data.msg);
+                    } else {
+                        alert("登录成功");
+                        location.href='http://localhost:8911/index.html';
+                    }
                 }
             })
         }

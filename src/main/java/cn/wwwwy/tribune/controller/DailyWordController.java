@@ -2,11 +2,13 @@ package cn.wwwwy.tribune.controller;
 
 
 import cn.wwwwy.tribune.entity.DailyWord;
-import cn.wwwwy.tribune.mapper.DailyWordMapper;
 import cn.wwwwy.tribune.service.IDailyWordService;
+import cn.wwwwy.tribune.util.BaseController;
 import cn.wwwwy.tribune.util.Result;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/dailyWord")
-public class DailyWordController {
+public class DailyWordController extends BaseController {
 	@Autowired
 	private IDailyWordService iDailyWordService;
 	@PostMapping(value = "add")
@@ -53,5 +55,11 @@ public class DailyWordController {
 		}else {
 			return new Result("删除失败",500,null);
 		}
+	}
+	@GetMapping(value = "page")
+	public Object page(Integer current,Integer pageSize){
+		IPage<DailyWord> page = new Page<>(current,pageSize);
+		page = iDailyWordService.page(page);
+		return buildPage(page);
 	}
 }
