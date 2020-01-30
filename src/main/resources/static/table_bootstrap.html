@@ -217,16 +217,28 @@
                                                     href="javascript:void(0)">25</a></li></ul></span> 条记录</span></div>
                                             <div class="pull-right pagination">
                                                 <ul class="pagination pagination-outline">
-                                                    <li class="page-first disabled"><a href="javascript:void(0)">«</a>
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize=10'" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-pre disabled"><a href="javascript:void(0)">‹</a>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize=10'" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-number active"><a href="javascript:void(0)">1</a>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize=10'" href="javascript:void(0)">‹</a>
                                                     </li>
-                                                    <li class="page-number"><a href="javascript:void(0)">2</a></li>
-                                                    <li class="page-number"><a href="javascript:void(0)">3</a></li>
-                                                    <li class="page-next"><a href="javascript:void(0)">›</a></li>
-                                                    <li class="page-last"><a href="javascript:void(0)">»</a></li>
+                                                    <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
+                                                    </li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
+                                                    <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize=10'" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline">
+                                                    <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize=10'" href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize=10'" href="javascript:void(0)">»</a>
+                                                    </li>
+                                                    <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
