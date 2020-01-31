@@ -124,7 +124,7 @@
                                         </div>
                                         <div class="columns columns-right btn-group pull-right">
                                             <button class="btn btn-default btn-outline" type="button" name="refresh"
-                                                    title="刷新">
+                                                    title="刷新" th:onclick="'javascript:goRefresh('+${data.page.pageNum}+','+${data.page.pageSize}+')'" onclick="goRefresh()">
                                                 <i class="glyphicon glyphicon-repeat">
                                                 </i>
                                             </button>
@@ -208,34 +208,37 @@
                                             </table>
                                         </div>
                                         <div class="fixed-table-pagination" id="footerPage" style="margin-top: 30px">
-                                            <div class="pull-left pagination-detail"><span class="pagination-info">显示第 1 到第 10 条记录，总共 21 条记录</span><span
+                                            <div class="pull-left pagination-detail"><span class="pagination-info" th:text="'显示第 '+(${data.page.pageSize}*(${data.page.pageNum}-1)+1)+' 到第 '+((${data.page.pageSize}*${data.page.pageNum})>${data.page.total}?${data.page.total}:(${data.page.pageSize}*${data.page.pageNum}))+' 条记录，总共 '+${data.page.total}+' 条记录'"></span><span
                                                     class="page-list">每页显示 <span class="btn-group dropup"><button
                                                     type="button" class="btn btn-default  btn-outline dropdown-toggle"
-                                                    data-toggle="dropdown"><span class="page-size">10</span> <span
-                                                    class="caret"></span></button><ul class="dropdown-menu" role="menu"><li
-                                                    class="active"><a href="javascript:void(0)">10</a></li><li><a
-                                                    href="javascript:void(0)">25</a></li></ul></span> 条记录</span></div>
+                                                    data-toggle="dropdown"><span class="page-size" th:text="${data.page.pageSize}">10</span> <span
+                                                    class="caret"></span></button><ul class="dropdown-menu" role="menu">
+                                                <li class="active" th:if="${data.page.pageSize} eq 10"><a href="javascript:void(0)" >10</a></li>
+                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/dailyWord/page?current=' + 1 + '&pageSize=10'" >10</a></li>
+                                                <li class="active" th:if="${data.page.pageSize} eq 25"><a href="javascript:void(0)">25</a></li>
+                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/dailyWord/page?current=' + 1 + '&pageSize=25'">25</a></li>
+                                            </ul></span> 条记录</span></div>
                                             <div class="pull-right pagination">
                                                 <ul class="pagination pagination-outline">
-                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize=10'" href="javascript:void(0)">«</a>
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize=10'" href="javascript:void(0)">«</a>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize=10'" href="javascript:void(0)">‹</a>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">‹</a>
                                                     </li>
                                                     <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
                                                     </li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
                                                     <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
-                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize=10'" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline">
                                                     <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize=10'" href="javascript:void(0)">›</a>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize=10'" href="javascript:void(0)">»</a>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">»</a>
                                                     </li>
                                                     <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
                                                     </li>
@@ -290,7 +293,7 @@
                 <!--newsletter-->
                 <div class="login-main wthree">
                     <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
-                    <input type="submit" onclick="addDailyWord()" value="确认增加">
+                    <input type="submit" onclick="addDailyWord()" th:onclick="'javascript:addDailyWord('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
                 </div>
                 <!--//newsletter-->
             </div>
@@ -314,6 +317,9 @@
             }
         })
     }
+    function goRefresh(current,pageSize){
+        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+    }
 </script>
 <script type="text/javascript">
     function goDeletes() {
@@ -331,7 +337,7 @@
             }
         })
     }
-    function addDailyWord() {
+    function addDailyWord(current,pageSize) {
         var contentWord = $("#contentWord").val();
         var id = $("#idWord").val();
         if (id == -1)
@@ -346,7 +352,7 @@
                     alert("添加成功");
                 else
                     alert("添加失败");
-                location.href("/dailyWord/page?current=1&pageSize=10");
+                location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
             }
         })
     }
