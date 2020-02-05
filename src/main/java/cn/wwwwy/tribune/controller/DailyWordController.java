@@ -5,6 +5,7 @@ import cn.wwwwy.tribune.entity.DailyWord;
 import cn.wwwwy.tribune.service.IDailyWordService;
 import cn.wwwwy.tribune.util.BaseController;
 import cn.wwwwy.tribune.util.Result;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +60,14 @@ public class DailyWordController extends BaseController {
 		}
 	}
 	@GetMapping(value = "page")
-	public ModelAndView page(Integer current, Integer pageSize, ModelAndView modelAndView){
+	public ModelAndView page(Integer current, Integer pageSize, ModelAndView modelAndView, String keyWords){
+		if (keyWords==null)keyWords = "";
 		IPage<DailyWord> page = new Page<>(current,pageSize);
-		page = iDailyWordService.page(page);
+		QueryWrapper<DailyWord> queryWrapper = new QueryWrapper<>();
+		queryWrapper.like("content",keyWords);
+		page = iDailyWordService.page(page,queryWrapper);
 		modelAndView.getModel().put("data",buildPage(page));
+		modelAndView.getModel().put("keyWords",keyWords);
 		modelAndView.setViewName("table_bootstrap");
 		return modelAndView;
 

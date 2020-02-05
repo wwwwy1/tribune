@@ -23,87 +23,18 @@
 
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>Bootstrap table <a href="http://bootstrap-table.wenzhixin.net.cn/zh-cn/" target="_blank">http://bootstrap-table.wenzhixin.net.cn/zh-cn/</a>
-            </h5>
-            <div class="ibox-tools">
-                <a class="collapse-link">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-wrench"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#">选项1</a>
-                    </li>
-                    <li><a href="#">选项2</a>
-                    </li>
-                </ul>
-                <a class="close-link">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-        </div>
-        <div class="ibox-content">
-            <p>Bootstrap table是国人开发的一款基于 Bootstrap 的 jQuery
-                表格插件，通过简单的设置，就可以拥有强大的单选、多选、排序、分页，以及编辑、导出、过滤（扩展）等等的功能。目前在github上已经有2600多个Star，可见其受欢迎程度。</p>
-            <ul>
-                <li>支持 Bootstrap 3 和 Bootstrap 2</li>
-                <li>自适应界面</li>
-                <li>固定表头</li>
-                <li>非常丰富的配置参数</li>
-                <li>直接通过标签使用</li>
-                <li>显示/隐藏列</li>
-                <li>显示/隐藏表头</li>
-                <li>通过 AJAX 获取 JSON 格式的数据</li>
-                <li>支持排序</li>
-                <li>格式化表格</li>
-                <li>支持单选或者多选</li>
-                <li>强大的分页功能</li>
-                <li>支持卡片视图</li>
-                <li>支持多语言</li>
-                <li>支持插件</li>
-            </ul>
-        </div>
-    </div>
-    <!-- End Panel Basic -->
-
-    <!-- Panel Style -->
-
-
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>其他</h5>
-            <div class="ibox-tools">
-                <a class="collapse-link">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-wrench"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#">选项1</a>
-                    </li>
-                    <li><a href="#">选项2</a>
-                    </li>
-                </ul>
-                <a class="close-link">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
-        </div>
         <div class="ibox-content">
             <div class="row row-lg">
                 <div class="col-sm-12">
                     <!-- Example Events -->
                     <div class="example-wrap">
-                        <h4 class="example-title">事件</h4>
+                        <h4 class="example-title">每日一言</h4>
                         <div class="example">
                             <div class="bootstrap-table">
-                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">Event:
-                                    load-success.bs.table
+                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。<br/>
+                                    或是感动，或是开心，有或是单纯的回忆。来到这里，留下你所喜欢的那一句句话，与大家分享，这就是一言存在的目的。
                                 </div>
 
                                 <div class="bootstrap-table">
@@ -124,6 +55,10 @@
                                         </div>
                                         <div class="columns columns-right btn-group pull-right">
                                             <button class="btn btn-default btn-outline" type="button" name="refresh"
+                                                    title="搜索"  onclick="goSearch()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-default btn-outline" type="button" name="refresh"
                                                     title="刷新" th:onclick="'javascript:goRefresh('+${data.page.pageNum}+','+${data.page.pageSize}+')'" onclick="goRefresh()">
                                                 <i class="glyphicon glyphicon-repeat">
                                                 </i>
@@ -132,31 +67,9 @@
                                                     title="切换">
                                                 <i class="glyphicon glyphicon-list-alt"></i>
                                             </button>
-                                            <div class="keep-open btn-group" title="列">
-                                                <button type="button"
-                                                        class="btn btn-default btn-outline dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                    <i class="glyphicon glyphicon-list"></i>
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li>
-                                                        <label><input type="checkbox" data-field="id" value="1"
-                                                                      checked="checked"> ID</label>
-                                                    </li>
-                                                    <li>
-                                                        <label><input type="checkbox" data-field="name" value="2"
-                                                                      checked="checked"> 名称</label>
-                                                    </li>
-                                                    <li>
-                                                        <label><input type="checkbox" data-field="price" value="3"
-                                                                      checked="checked"> 价格</label>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </div>
                                         <div class="pull-right search"><input class="form-control input-outline"
-                                                                              type="text" placeholder="搜索"></div>
+                                                                              type="text" placeholder="搜索" id="searchKeyWords" th:value="${keyWords}"></div>
                                     </div>
                                     <div class="fixed-table-container" style="height: 287px; padding-bottom: 35px;">
                                         <div class="fixed-table-body">
@@ -220,25 +133,25 @@
                                             </ul></span> 条记录</span></div>
                                             <div class="pull-right pagination">
                                                 <ul class="pagination pagination-outline">
-                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">‹</a>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">‹</a>
                                                     </li>
                                                     <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
                                                     </li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
                                                     <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
-                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline">
                                                     <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">›</a>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">»</a>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">»</a>
                                                     </li>
                                                     <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
                                                     </li>
@@ -303,6 +216,9 @@
 
 </body>
 <script type="text/javascript">
+    function goSearch() {
+       location.href("/dailyWord/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
+    }
     function getPage(current,pageSize) {
         $.ajax({
             url: "/dailyWord/deletes",
