@@ -38,7 +38,7 @@ import java.time.LocalDateTime;
             /**
             * 软删除  0:未删除 1:已删除
             */
-            @TableLogic
+            @TableLogic(value = "0",delval = "1")
         @TableField("is_deleted")
     private Integer isDeleted;
     /**

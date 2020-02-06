@@ -6,6 +6,7 @@ import cn.wwwwy.tribune.service.IDailyWordService;
 import cn.wwwwy.tribune.util.BaseController;
 import cn.wwwwy.tribune.util.Result;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
