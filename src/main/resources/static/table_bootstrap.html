@@ -202,6 +202,19 @@
     <script src="js/demo/bootstrap-table-demo.js"></script>
 -->
 <script type="text/javascript">
+    $('input[name="btSelectAll"]').on("click",function(){
+        if($(this).is(':checked')){
+            $('input[name="btSelectItem"]').each(function(){
+                $(this).prop("checked",true);
+            });
+        }else{
+            $('input[name="btSelectItem"]').each(function(){
+                $(this).prop("checked",false);
+            });
+        }
+    });
+</script>
+<script type="text/javascript">
     function goWord() {
         $('#hiddenId').val("-1");
         $('#contentWord').val("");
@@ -264,9 +277,17 @@
 </script>
 <script type="text/javascript">
     function goDeletes() {
+        var ids = "";
+        $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+            ids = ids + $(this).val() + ',';
+        });
+        if (ids == ""){
+            alert("未选中任何元素");
+            return;
+        }
         $.ajax({
             url: "/dailyWord/deletes",
-            data:{"ids":contentWord,"id":id},
+            data:{"ids":ids},
             type: "post",
             dataType: "json",
             success: function (data) {
@@ -274,6 +295,7 @@
                     alert("删除成功");
                 else
                     alert("删除失败");
+                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
             }
         })
     }
