@@ -83,20 +83,20 @@
                                                                                       type="checkbox"></div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="id" tabindex="0">
-                                                        <div class="th-inner ">ID</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
                                                     <th style="" data-field="content" tabindex="0">
                                                         <div class="th-inner ">内容</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="insertDate" tabindex="0">
+                                                    <th style="width: 23%;" data-field="insertDate" tabindex="0">
                                                         <div class="th-inner ">插入时间</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="updateDate" tabindex="0">
+                                                    <th style="width: 23%;" data-field="updateDate" tabindex="0">
                                                         <div class="th-inner ">更新时间</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="width: 70px;" data-field="operation" tabindex="0">
+                                                        <div class="th-inner ">操作</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
                                                 </tr>
@@ -105,10 +105,19 @@
                                                 <tr data-index="0" th:each="data:${data.data.list}">
                                                     <td class="bs-checkbox"><input data-index="0" th:value="${data.id}" name="btSelectItem"
                                                                                    type="checkbox"></td>
-                                                    <td style=""th:text="${data.id}">0</td>
                                                     <td style=""th:text="${data.content}">测试0</td>
                                                     <td style=""th:text="${#temporals.format(data.insertDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
                                                     <td style=""th:text="${#temporals.format(data.updateDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
+                                                    <td style="" align="center">
+                                                        <button type="button" class="btn btn-outline btn-default"
+                                                                title="修改" th:onclick="'javascript:goUpdate('+${data.id}+')'" >
+                                                            <i class="fa fa-wrench"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline btn-default"
+                                                                title="删除" th:onclick="'javascript:goDelete('+${data.id}+')'" onclick="">
+                                                            <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -194,6 +203,21 @@
 -->
 <script type="text/javascript">
     function goWord() {
+        $('#hiddenId').val("-1");
+        $('#contentWord').val("");
+        $('#myModal4').modal();
+    }
+    function goUpdate(id){
+        $('#hiddenId').val(id);
+        $.ajax({
+            url: "/dailyWord/getById",
+            data:{"id":id},
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#contentWord').val(data.content);
+            }
+        })
         $('#myModal4').modal();
     }
 </script>
@@ -204,6 +228,7 @@
                 <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
                 <h4>每日一言</h4>
                 <!--newsletter-->
+                <input hidden="hidden" id="hiddenId" value="" />
                 <div class="login-main wthree">
                     <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
                     <input type="submit" onclick="addDailyWord()" th:onclick="'javascript:addDailyWord('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
@@ -239,7 +264,6 @@
 </script>
 <script type="text/javascript">
     function goDeletes() {
-
         $.ajax({
             url: "/dailyWord/deletes",
             data:{"ids":contentWord,"id":id},
@@ -253,9 +277,24 @@
             }
         })
     }
+    function goDelete(id) {
+        $.ajax({
+            url: "/dailyWord/delete",
+            data:{"id":id},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200){
+                    alert("删除成功");
+                    location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                } else
+                    alert("删除失败");
+            }
+        })
+    }
     function addDailyWord(current,pageSize) {
         var contentWord = $("#contentWord").val();
-        var id = $("#idWord").val();
+        var id = $("#hiddenId").val();
         if (id == -1)
             id = null;
         $.ajax({
@@ -266,6 +305,8 @@
             success: function (data) {
                 if (data.code == 200)
                     alert("添加成功");
+                else if (data.code == 201)
+                    alert("修改成功")
                 else
                     alert("添加失败");
                 location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);

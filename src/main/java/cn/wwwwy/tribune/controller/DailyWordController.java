@@ -32,11 +32,15 @@ public class DailyWordController extends BaseController {
 	@ResponseBody
 	@PostMapping(value = "add")
 	public Result insertDailyWord(DailyWord dailyWord){
-		if (dailyWord.getId()==null)
+		if (dailyWord.getId()==null){
 			iDailyWordService.save(dailyWord);
-		else
+			return new Result("成功",200,dailyWord);
+		}
+		else{
 			iDailyWordService.updateById(dailyWord);
-		return new Result("成功",200,dailyWord);
+			return new Result("成功",201,dailyWord);
+		}
+
 	}
 	@ResponseBody
 	@PostMapping(value = "deletes")
@@ -70,6 +74,10 @@ public class DailyWordController extends BaseController {
 		modelAndView.getModel().put("keyWords",keyWords);
 		modelAndView.setViewName("table_bootstrap");
 		return modelAndView;
-
+	}
+	@GetMapping(value = "getById")
+	@ResponseBody
+	public DailyWord getById(Integer id){
+		return iDailyWordService.getById(id);
 	}
 }
