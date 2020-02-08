@@ -257,61 +257,101 @@
     function goSearch() {
        location.href("/dailyWord/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
     }
-    function getPage(current,pageSize) {
-        $.ajax({
-            url: "/dailyWord/deletes",
-            data:{"current":current,"pageSize":pageSize},
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200)
-                    alert("删除成功");
-                else
-                    alert("删除失败");
-            }
-        })
-    }
     function goRefresh(current,pageSize){
         location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
     }
 </script>
+<link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 <script type="text/javascript">
     function goDeletes() {
-        var ids = "";
-        $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
-            ids = ids + $(this).val() + ',';
-        });
-        if (ids == ""){
-            alert("未选中任何元素");
-            return;
-        }
-        $.ajax({
-            url: "/dailyWord/deletes",
-            data:{"ids":ids},
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200)
-                    alert("删除成功");
-                else
-                    alert("删除失败");
-                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+        swal({
+            title: "您确定要删除这些数据吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        },function () {
+            var ids = "";
+            $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+                ids = ids + $(this).val() + ',';
+            });
+            if (ids == ""){
+                swal({
+                    title: "删除失败",
+                    text: "未选中任何元素",
+                    type: "warning"
+                },function () {
+                    return;
+                });
+            }else {
+                $.ajax({
+                    url: "/dailyWord/deletes",
+                    data:{"ids":ids},
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 200){
+                            swal({
+                                title: "删除成功",
+                                text: "删除成功",
+                                type: "success"
+                            },function () {
+                                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                            });
+                        } else {
+                            swal({
+                                title: "删除失败",
+                                text: "删除失败",
+                                type: "warning"
+                            },function () {
+                                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                            });
+                        }
+                    }
+                })
             }
-        })
+        });
+
     }
     function goDelete(id) {
-        $.ajax({
-            url: "/dailyWord/delete",
-            data:{"id":id},
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200){
-                    alert("删除成功");
-                    location.href("/dailyWord/page?current="+1+"&pageSize="+10);
-                } else
-                    alert("删除失败");
-            }
+        swal({
+            title: "您确定要删除这些数据吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        },function () {
+            $.ajax({
+                url: "/dailyWord/delete",
+                data:{"id":id},
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 200){
+                        swal({
+                            title: "删除成功",
+                            text: "删除成功",
+                            type: "success"
+                        },function () {
+                            location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                        });
+                    } else {
+                        swal({
+                            title: "删除失败",
+                            text: "删除失败",
+                            type: "warning"
+                        },function () {
+                            location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                        });
+                    }
+                }
+            })
         })
     }
     function addDailyWord(current,pageSize) {
@@ -325,13 +365,31 @@
             type: "post",
             dataType: "json",
             success: function (data) {
-                if (data.code == 200)
-                    alert("添加成功");
-                else if (data.code == 201)
-                    alert("修改成功")
-                else
-                    alert("添加失败");
-                location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                if (data.code == 200){
+                    swal({
+                        title: "添加成功",
+                        text: "添加成功",
+                        type: "success"
+                    },function () {
+                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                    });
+                } else if (data.code == 201){
+                    swal({
+                        title: "修改成功",
+                        text: "修改成功",
+                        type: "success"
+                    },function () {
+                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                    });
+                } else {
+                    swal({
+                        title: "添加失败",
+                        text: "添加失败",
+                        type: "warning"
+                    },function () {
+                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                    });
+                }
             }
         })
     }

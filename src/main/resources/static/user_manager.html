@@ -43,7 +43,7 @@
                                         <div class="bars pull-left">
                                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar"
                                                  role="group">
-                                                <button type="button" class="btn btn-outline btn-default" onclick="goWord()">
+                                                <button id="addUser" type="button" class="btn btn-outline btn-default" onclick="goWord()">
                                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline btn-default">
@@ -225,7 +225,12 @@
         });
     });
 </script>
+<!-- jQuery Validation plugin javascript-->
+<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
 
+
+<script th:src="@{/js/demo/form-validate-demo.js}"></script>
 <!-- Peity -->
 <script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
 
@@ -247,8 +252,14 @@
 </script>
 <script type="text/javascript">
     function goWord() {
-        $('#hiddenId').val("-1");
-        $('#contentWord').val("");
+        $('#userId').val("-1");
+        $('#password').val("");
+        $('#confirm_password').val("");
+        $('#userTitle').val("");
+        $('#userEmail').val("");
+        $('#userName').val("");
+        $('input').attr("readonly",false);
+        $('#userNickname').val("");
         $('#myModal4').modal();
     }
     function goUpdate(id){
@@ -260,6 +271,14 @@
             dataType: "json",
             success: function (data) {
                 $('#contentWord').val(data.content);
+                $('#userId').val(data.Id);
+                $('#password').val("");
+                $('#confirm_password').val("");
+                $('#userTitle').val(data.userTitle);
+                $('#userEmail').val(data.userEmail);
+                $('#userName').val(data.userName);
+                $('#userName').attr("readonly","readonly");
+                $('#userNickname').val(data.userNickname);
             }
         })
         $('#myModal4').modal();
@@ -268,14 +287,67 @@
 <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content news-w3l">
-            <div class="modal-header">
+            <div class="modal-header" id="userManageModal">
                 <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
-                <h4>每日一言</h4>
+                <h4>新增或修改用户</h4>
                 <!--newsletter-->
-                <input hidden="hidden" id="hiddenId" value="" />
-                <div class="login-main wthree">
-                    <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
-                    <input type="submit" onclick="addDailyWord()" th:onclick="'javascript:addDailyWord('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm" >
+                        <input id="userId" hidden="hidden" value="-1">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">用户名：</label>
+                            <div class="col-sm-8">
+                                <input id="userName" name="userName" class="form-control" type="text">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 用于登录,不可修改</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">昵称：</label>
+                            <div class="col-sm-8">
+                                <input id="userNickname" name="userNickname" class="form-control" type="text" aria-required="true" aria-invalid="false" >
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 用于展示,可修改</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">头衔：</label>
+                            <div class="col-sm-8">
+                                <input id="userTitle" name="userTitle" class="form-control" type="text" aria-required="true" aria-invalid="false" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">密码：</label>
+                            <div class="col-sm-8">
+                                <input id="password" name="password" class="form-control" type="password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">确认密码：</label>
+                            <div class="col-sm-8">
+                                <input id="confirm_password" name="confirm_password" class="form-control" type="password">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">E-mail：</label>
+                            <div class="col-sm-8">
+                                <input id="userEmail" name="userEmail" class="form-control" type="email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" class="checkbox" id="agree" name="agree"> 我已经认真阅读并同意《Y使用协议》
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button class="btn btn-primary" type="submit">提交</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <!--//newsletter-->
             </div>
@@ -284,23 +356,12 @@
 </div>
 
 </body>
+<link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 <script type="text/javascript">
     function goSearch() {
        location.href("/user/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
-    }
-    function getPage(current,pageSize) {
-        $.ajax({
-            url: "/user/deletes",
-            data:{"current":current,"pageSize":pageSize},
-            type: "get",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200)
-                    alert("删除成功");
-                else
-                    alert("删除失败");
-            }
-        })
     }
     function goRefresh(current,pageSize){
         location.href("/user/page?current="+current+"&pageSize="+pageSize);
@@ -308,63 +369,133 @@
 </script>
 <script type="text/javascript">
     function goDeletes() {
-        var ids = "";
-        $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
-            ids = ids + $(this).val() + ',';
-        });
-        if (ids == ""){
-            alert("未选中任何元素");
-            return;
-        }
-        $.ajax({
-            url: "/user/deletes",
-            data:{"ids":ids},
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200)
-                    alert("删除成功");
-                else
-                    alert("删除失败");
-                location.href("/user/page?current="+1+"&pageSize="+10);
+        swal({
+            title: "您确定要删除这些数据吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        },function () {
+            var ids = "";
+            $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+                ids = ids + $(this).val() + ',';
+            });
+            if (ids == ""){
+                swal({
+                    title: "删除失败",
+                    text: "未选中任何元素",
+                    type: "warning"
+                },function () {
+                    return;
+                });
+            }else {
+                $.ajax({
+                    url: "/user/deletes",
+                    data:{"ids":ids},
+                    type: "post",
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 200){
+                            swal({
+                                title: "删除成功",
+                                text: "删除成功",
+                                type: "success"
+                            },function () {
+                                location.href("/user/page?current="+1+"&pageSize="+10);
+                            });
+                        } else {
+                            swal({
+                                title: "删除失败",
+                                text: "删除失败",
+                                type: "warning"
+                            },function () {
+                                location.href("/user/page?current="+1+"&pageSize="+10);
+                            });
+                        }
+                    }
+                })
             }
-        })
+        });
+
     }
     function goDelete(id) {
-        $.ajax({
-            url: "/user/delete",
-            data:{"id":id},
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200){
-                    alert("删除成功");
-                    location.href("/user/page?current="+1+"&pageSize="+10);
-                } else
-                    alert("删除失败");
-            }
+        swal({
+            title: "您确定要删除这些数据吗",
+            text: "删除后将无法恢复，请谨慎操作！",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "删除",
+            closeOnConfirm: false
+        },function () {
+            $.ajax({
+                url: "/user/delete",
+                data:{"id":id},
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 200){
+                        swal({
+                            title: "删除成功",
+                            text: "删除成功",
+                            type: "success"
+                        },function () {
+                            location.href("/user/page?current="+1+"&pageSize="+10);
+                        });
+                    } else {
+                        swal({
+                            title: "删除失败",
+                            text: "删除失败",
+                            type: "warning"
+                        },function () {
+                            location.href("/user/page?current="+1+"&pageSize="+10);
+                        });
+                    }
+                }
+            })
         })
     }
-    function addDailyWord(current,pageSize) {
-        var contentWord = $("#contentWord").val();
-        var id = $("#hiddenId").val();
+    function addUser(current,pageSize) {
+        var id = $("#userId").val();
         if (id == -1)
             id = null;
         $.ajax({
             url: "/user/add",
-            data:{"content":contentWord,"id":id},
+            data:{"userId":id,"userNickname":$("#userNickname").val(),"userTitle":$("#userTitle").val(),
+                "userPassword":$("#password").val(),"userEmail":$("#userEmail")},
             type: "post",
             dataType: "json",
             success: function (data) {
-                if (data.code == 200)
-                    alert("添加成功");
-                else if (data.code == 201)
-                    alert("修改成功")
-                else
-                    alert("添加失败");
-                location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                if (data.code == 200){
+                    swal({
+                        title: "添加成功",
+                        text: "添加成功",
+                        type: "success"
+                    },function () {
+                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                    });
+                } else if (data.code == 201){
+                    swal({
+                        title: "修改成功",
+                        text: "修改成功",
+                        type: "success"
+                    },function () {
+                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                    });
+                } else {
+                    swal({
+                        title: "添加失败",
+                        text: "添加失败",
+                        type: "warning"
+                    },function () {
+                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                    });
+                }
             }
         })
     }
+
 </script>
 </html>

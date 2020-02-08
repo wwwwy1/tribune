@@ -41,7 +41,6 @@ public class DailyWordController extends BaseController {
 			iDailyWordService.updateById(dailyWord);
 			return new Result("成功",201,dailyWord);
 		}
-
 	}
 	@ResponseBody
 	@PostMapping(value = "deletes")

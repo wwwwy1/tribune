@@ -54,6 +54,7 @@ public class UserController extends BaseController {
 		if (keyWords==null)keyWords = "";
 		IPage<User> page = new Page<>(current,pageSize);
 		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.orderByAsc("insert_date");
 		//queryWrapper.like("user_nikename",keyWords);
 		page = iUserService.page(page,queryWrapper);
 		modelAndView.getModel().put("data",buildPage(page));
@@ -86,6 +87,18 @@ public class UserController extends BaseController {
 			return new Result("删除成功",200,null);
 		}else {
 			return new Result("删除失败",500,null);
+		}
+	}
+	@ResponseBody
+	@PostMapping(value = "add")
+	public Result insertUser(User user){
+		if (user.getId()==null){
+			iUserService.save(user);
+			return new Result("成功",200,user);
+		}
+		else{
+			iUserService.updateById(user);
+			return new Result("成功",201,user);
 		}
 	}
 }
