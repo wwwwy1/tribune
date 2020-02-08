@@ -119,7 +119,11 @@ import java.util.Date;
             */
         @TableField(value = "insert_date",fill = FieldFill.INSERT)
     private LocalDateTime insertDate;
-
+    /**
+     * 注册时间
+     */
+    @TableField(value = "last_login_date")
+    private LocalDateTime lastLoginDate;
             /**
             * 软删除  0:未删除 1:已删除
             */

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title> - Bootstrap Table</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <link th:href="@{/favicon.ico}" rel="shortcut icon" href="favicon.ico">
+    <link th:href="@{/css/bootstrap.min.css?v=3.3.6}" href="css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link th:href="@{/css/font-awesome.css?v=4.4.0}" href="css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link th:href="@{/css/plugins/bootstrap-table/bootstrap-table.min.css}" href="css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+    <link th:href="@{/css/animate.css}" href="css/animate.css" rel="stylesheet">
+    <link th:href="@{/css/style.css?v=4.1.0}" href="css/style.css?v=4.1.0" rel="stylesheet">
+    <link th:href="@{/js/plugins/fancybox/jquery.fancybox.css}" rel="stylesheet">
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <!-- Example Events -->
+                    <div class="example-wrap">
+                        <h4 class="example-title">用户管理</h4>
+                        <div class="example">
+                            <div class="bootstrap-table">
+                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。<br/>
+                                    或是感动，或是开心，有或是单纯的回忆。来到这里，留下你所喜欢的那一句句话，与大家分享，这就是一言存在的目的。
+                                </div>
+
+                                <div class="bootstrap-table">
+                                    <div class="fixed-table-toolbar">
+                                        <div class="bars pull-left">
+                                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar"
+                                                 role="group">
+                                                <button type="button" class="btn btn-outline btn-default" onclick="goWord()">
+                                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline btn-default">
+                                                    <i class="glyphicon glyphicon-heart" aria-hidden="true"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-outline btn-default" onclick="goDeletes()">
+                                                    <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="columns columns-right btn-group pull-right">
+                                            <button class="btn btn-default btn-outline" type="button" name="refresh"
+                                                    title="搜索"  onclick="goSearch()">
+                                            <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-default btn-outline" type="button" name="refresh"
+                                                    title="刷新" th:onclick="'javascript:goRefresh('+${data.page.pageNum}+','+${data.page.pageSize}+')'" onclick="goRefresh()">
+                                                <i class="glyphicon glyphicon-repeat">
+                                                </i>
+                                            </button>
+                                            <button class="btn btn-default btn-outline" type="button" name="toggle"
+                                                    title="切换">
+                                                <i class="glyphicon glyphicon-list-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div class="pull-right search"><input class="form-control input-outline"
+                                                                              type="text" placeholder="搜索" id="searchKeyWords" th:value="${keyWords}"></div>
+                                    </div>
+                                    <div class="fixed-table-container" style="height: 287px; padding-bottom: 35px;">
+                                        <div class="fixed-table-body">
+                                            <table id="exampleTableEvents" data-height="400"
+                                                   data-mobile-responsive="true" class="table table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th class="bs-checkbox " style="width: 36px; " data-field="state"
+                                                        tabindex="0">
+                                                        <div class="th-inner "><input name="btSelectAll"
+                                                                                      type="checkbox"></div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="userImg" tabindex="0">
+                                                        <div class="th-inner ">头像</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="userName" tabindex="0">
+                                                        <div class="th-inner ">用户名</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="userNickname" tabindex="0">
+                                                        <div class="th-inner ">昵称</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="" data-field="userEmail" tabindex="0">
+                                                        <div class="th-inner ">邮箱</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="width: 23%;" data-field="lastLoginDate" tabindex="0">
+                                                        <div class="th-inner ">上次登录时间</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                    <th style="width: 70px;" data-field="operation" tabindex="0">
+                                                        <div class="th-inner ">操作</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="contentBody">
+                                                <tr data-index="0" th:each="data:${data.data.list}">
+                                                    <td class="bs-checkbox"><input data-index="0" th:value="${data.id}" name="btSelectItem"
+                                                                                   type="checkbox"></td>
+                                                    <td style="width: 60px">
+                                                        <a class="fancybox" th:href="'/images/' + ${data.userImg}"  title="用户头像">
+                                                            <div style="" th:style=" 'width: 50px; height: 50px;
+                                                            background: url(\'/images/'+ @{(${data.userImg})} + '\');'+'background-size:50px 50px;
+                                                            background-repeat:no-repeat;'">
+                                                            </div>
+                                                        </a>
+                                                    </td>
+                                                    <td style=""th:text="${data.userName}">测试0</td>
+                                                    <td style=""th:text="${data.userNickname}">测试0</td>
+                                                    <td style=""th:text="${data.userEmail}">测试0</td>
+                                                    <td style=""th:text="${#temporals.format(data.lastLoginDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
+                                                    <td style="" align="center">
+                                                        <button type="button" class="btn btn-outline btn-default"
+                                                                title="修改" th:onclick="goUpdate([[${data.id}]])" >
+                                                            <i class="fa fa-wrench"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-outline btn-default"
+                                                                title="删除" th:onclick="goDelete([[${data.id}]])" onclick="">
+                                                            <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="fixed-table-footer" style="display: none;">
+                                            <table>
+                                                <tbody>
+                                                <tr></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="fixed-table-pagination" id="footerPage" style="margin-top: 30px">
+                                            <div class="pull-left pagination-detail"><span class="pagination-info" th:text="'显示第 '+(${data.page.pageSize}*(${data.page.pageNum}-1)+1)+' 到第 '+((${data.page.pageSize}*${data.page.pageNum})>${data.page.total}?${data.page.total}:(${data.page.pageSize}*${data.page.pageNum}))+' 条记录，总共 '+${data.page.total}+' 条记录'"></span><span
+                                                    class="page-list">每页显示 <span class="btn-group dropup"><button
+                                                    type="button" class="btn btn-default  btn-outline dropdown-toggle"
+                                                    data-toggle="dropdown"><span class="page-size" th:text="${data.page.pageSize}">10</span> <span
+                                                    class="caret"></span></button><ul class="dropdown-menu" role="menu">
+                                                <li class="active" th:if="${data.page.pageSize} eq 10"><a href="javascript:void(0)" >10</a></li>
+                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/user/page?current=' + 1 + '&pageSize=10'" >10</a></li>
+                                                <li class="active" th:if="${data.page.pageSize} eq 25"><a href="javascript:void(0)">25</a></li>
+                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/user/page?current=' + 1 + '&pageSize=25'">25</a></li>
+                                            </ul></span> 条记录</span></div>
+                                            <div class="pull-right pagination">
+                                                <ul class="pagination pagination-outline">
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/user/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    </li>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/user/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    </li>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/user/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">‹</a>
+                                                    </li>
+                                                    <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
+                                                    </li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
+                                                    <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/user/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/user/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline">
+                                                    <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/user/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/user/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">»</a>
+                                                    </li>
+                                                    <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>                        <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script th:src="@{/js/jquery.min.js?v=2.1.4}" src="js/jquery.min.js?v=2.1.4"></script>
+<script th:src="@{/js/bootstrap.min.js?v=3.3.6}" src="js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script th:src="@{/js/content.js?v=1.0.0}" src="js/content.js?v=1.0.0"></script>
+
+
+<!-- Bootstrap table -->
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table.min.js}" src="js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script th:src="@{/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js}" src="js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script th:src="@{/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js}" src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script th:src="@{/js/plugins/layer/layer.min.js}" src="js/plugins/layer/layer.min.js" type="text/javascript"></script>
+<link  th:href="@{/css/openDiv.css}" href="css/openDiv.css" rel="stylesheet">
+
+<!-- Fancy box -->
+<script th:src="@{/js/plugins/fancybox/jquery.fancybox.js}"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.fancybox').fancybox({
+            openEffect: 'none',
+            closeEffect: 'none'
+        });
+    });
+</script>
+
+<!-- Peity -->
+<script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
+
+<!--
+    <script src="js/demo/bootstrap-table-demo.js"></script>
+-->
+<script type="text/javascript">
+    $('input[name="btSelectAll"]').on("click",function(){
+        if($(this).is(':checked')){
+            $('input[name="btSelectItem"]').each(function(){
+                $(this).prop("checked",true);
+            });
+        }else{
+            $('input[name="btSelectItem"]').each(function(){
+                $(this).prop("checked",false);
+            });
+        }
+    });
+</script>
+<script type="text/javascript">
+    function goWord() {
+        $('#hiddenId').val("-1");
+        $('#contentWord').val("");
+        $('#myModal4').modal();
+    }
+    function goUpdate(id){
+        $('#hiddenId').val(id);
+        $.ajax({
+            url: "/user/getById",
+            data:{"id":id},
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                $('#contentWord').val(data.content);
+            }
+        })
+        $('#myModal4').modal();
+    }
+</script>
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content news-w3l">
+            <div class="modal-header">
+                <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
+                <h4>每日一言</h4>
+                <!--newsletter-->
+                <input hidden="hidden" id="hiddenId" value="" />
+                <div class="login-main wthree">
+                    <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
+                    <input type="submit" onclick="addDailyWord()" th:onclick="'javascript:addDailyWord('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
+                </div>
+                <!--//newsletter-->
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script type="text/javascript">
+    function goSearch() {
+       location.href("/user/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
+    }
+    function getPage(current,pageSize) {
+        $.ajax({
+            url: "/user/deletes",
+            data:{"current":current,"pageSize":pageSize},
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200)
+                    alert("删除成功");
+                else
+                    alert("删除失败");
+            }
+        })
+    }
+    function goRefresh(current,pageSize){
+        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+    }
+</script>
+<script type="text/javascript">
+    function goDeletes() {
+        var ids = "";
+        $("input[name='btSelectItem']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+            ids = ids + $(this).val() + ',';
+        });
+        if (ids == ""){
+            alert("未选中任何元素");
+            return;
+        }
+        $.ajax({
+            url: "/user/deletes",
+            data:{"ids":ids},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200)
+                    alert("删除成功");
+                else
+                    alert("删除失败");
+                location.href("/user/page?current="+1+"&pageSize="+10);
+            }
+        })
+    }
+    function goDelete(id) {
+        $.ajax({
+            url: "/user/delete",
+            data:{"id":id},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200){
+                    alert("删除成功");
+                    location.href("/user/page?current="+1+"&pageSize="+10);
+                } else
+                    alert("删除失败");
+            }
+        })
+    }
+    function addDailyWord(current,pageSize) {
+        var contentWord = $("#contentWord").val();
+        var id = $("#hiddenId").val();
+        if (id == -1)
+            id = null;
+        $.ajax({
+            url: "/user/add",
+            data:{"content":contentWord,"id":id},
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                if (data.code == 200)
+                    alert("添加成功");
+                else if (data.code == 201)
+                    alert("修改成功")
+                else
+                    alert("添加失败");
+                location.href("/user/page?current="+current+"&pageSize="+pageSize);
+            }
+        })
+    }
+</script>
+</html>
