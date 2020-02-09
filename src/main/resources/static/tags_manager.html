@@ -18,8 +18,25 @@
     <link th:href="@{/css/animate.css}" href="css/animate.css" rel="stylesheet">
     <link th:href="@{/css/style.css?v=4.1.0}" href="css/style.css?v=4.1.0" rel="stylesheet">
     <link th:href="@{/js/plugins/fancybox/jquery.fancybox.css}" rel="stylesheet">
+    <link th:href="@{/css/plugins/switchery/switchery.css}" rel="stylesheet">
 
-
+    <script th:src="@{/js/switchDdd.js}"></script>
+    <style>
+        #js1 {
+            font-family: 'Open Sans', sans-serif;
+            vertical-align: middle;
+            color: red;
+        }
+    </style>
+    <script>
+        function captureTheChangeEvent(self, event) {
+            if (self.checked) {
+                document.getElementById('js1').style.color = 'green';
+            } else {
+                document.getElementById('js1').style.color = 'red';
+            }
+        }
+    </script>
 </head>
 
 <body class="gray-bg">
@@ -31,13 +48,14 @@
                 <div class="col-sm-12">
                     <!-- Example Events -->
                     <div class="example-wrap">
-                        <h4 class="example-title">用户管理</h4>
+                        <h4 class="example-title">标签管理</h4>
                         <div class="example">
                             <div class="bootstrap-table">
-                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">
-                                    用户管理模块提供对用户信息的管理
+                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。<br/>
+                                    或是感动，或是开心，有或是单纯的回忆。来到这里，留下你所喜欢的那一句句话，与大家分享，这就是一言存在的目的。
                                 </div>
-
+                                <jelly-switch id="js1"  onToggle="return captureTheChangeEvent(this,event)" right-value="Ek Hee Raasta">
+                                </jelly-switch>
                                 <div class="bootstrap-table">
                                     <div class="fixed-table-toolbar">
                                         <div class="bars pull-left">
@@ -84,24 +102,20 @@
                                                                                       type="checkbox"></div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="userImg" tabindex="0">
-                                                        <div class="th-inner ">头像</div>
+                                                    <th style="" data-field="tagsName" tabindex="0">
+                                                        <div class="th-inner ">标签名</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="userName" tabindex="0">
-                                                        <div class="th-inner ">用户名</div>
+                                                    <th style="" data-field="tagsCount" tabindex="0">
+                                                        <div class="th-inner ">使用次数</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="userNickname" tabindex="0">
-                                                        <div class="th-inner ">昵称</div>
+                                                    <th style="" data-field="insertDate" tabindex="0">
+                                                        <div class="th-inner ">插入时间</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
-                                                    <th style="" data-field="userEmail" tabindex="0">
-                                                        <div class="th-inner ">邮箱</div>
-                                                        <div class="fht-cell"></div>
-                                                    </th>
-                                                    <th style="width: 23%;" data-field="lastLoginDate" tabindex="0">
-                                                        <div class="th-inner ">上次登录时间</div>
+                                                    <th style="" data-field="updateDate" tabindex="0">
+                                                        <div class="th-inner ">更新时间</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
                                                     <th style="width: 70px;" data-field="operation" tabindex="0">
@@ -114,18 +128,10 @@
                                                 <tr data-index="0" th:each="data:${data.data.list}">
                                                     <td class="bs-checkbox"><input data-index="0" th:value="${data.id}" name="btSelectItem"
                                                                                    type="checkbox"></td>
-                                                    <td style="width: 60px">
-                                                        <a class="fancybox" th:href="'/images/' + ${data.userImg}"  title="用户头像">
-                                                            <div style="" th:style=" 'width: 50px; height: 50px;
-                                                            background: url(\'/images/'+ @{(${data.userImg})} + '\');'+'background-size:50px 50px;
-                                                            background-repeat:no-repeat;'">
-                                                            </div>
-                                                        </a>
-                                                    </td>
-                                                    <td style=""th:text="${data.userName}">测试0</td>
-                                                    <td style=""th:text="${data.userNickname}">测试0</td>
-                                                    <td style=""th:text="${data.userEmail}">测试0</td>
-                                                    <td style=""th:text="${#temporals.format(data.lastLoginDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
+                                                    <td style=""th:text="${data.tagsName}">测试0</td>
+                                                    <td style=""th:text="${data.tagsCount}">测试0</td>
+                                                    <td style=""th:text="${#temporals.format(data.insertDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
+                                                    <td style=""th:text="${#temporals.format(data.updateDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
                                                     <td style="" align="center">
                                                         <button type="button" class="btn btn-outline btn-default"
                                                                 title="修改" th:onclick="goUpdate([[${data.id}]])" >
@@ -171,14 +177,14 @@
                                                 </ul>
                                                 <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
                                                     <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
-                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/user/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/user/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/tags/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/user/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline">
                                                     <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/user/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">›</a>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/tags/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/user/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">»</a>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/tags/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">»</a>
                                                     </li>
                                                     <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
                                                     </li>
@@ -228,9 +234,10 @@
 <!-- jQuery Validation plugin javascript-->
 <script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
 <script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+<!-- Switchery -->
+<script th:src="@{/js/plugins/switchery/switchery.js}"></script>
 
-
-<script th:src="@{/js/demo/form-validate-demo.js}"></script>
+<script th:src="@{/js/demo/form-validate-tags.js}"></script>
 <!-- Peity -->
 <script th:src="@{/js/plugins/peity/jquery.peity.min.js}"></script>
 
@@ -266,7 +273,7 @@
     function goUpdate(id){
         $('#hiddenId').val(id);
         $.ajax({
-            url: "/user/getById",
+            url: "/tags/getById",
             data:{"id":id},
             type: "get",
             dataType: "json",
@@ -291,48 +298,27 @@
         <div class="modal-content news-w3l">
             <div class="modal-header" id="userManageModal">
                 <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
-                <h4 id="modalTitle">新增或修改用户</h4>
+                <h4 id="modalTitle">新增或修改标签</h4>
                 <!--newsletter-->
                 <div class="ibox-content">
                     <form class="form-horizontal m-t" id="signupForm" >
-                        <input id="userId" hidden="hidden" value="-1">
+                        <input id="tagsId" hidden="hidden" value="-1">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">用户名：</label>
+                            <label class="col-sm-3 control-label">标签名：</label>
                             <div class="col-sm-8">
-                                <input id="userName" name="userName" class="form-control" type="text">
-                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 用于登录,不可修改</span>
+                                <input id="tagsName" name="tagsName" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">昵称：</label>
+                            <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
-                                <input id="userNickname" name="userNickname" class="form-control" type="text" aria-required="true" aria-invalid="false" >
-                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 用于展示,可修改</span>
+                                <textarea id="tagsRemarks" name="tagsRemarks" class="form-control" required="" aria-required="true"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">头衔：</label>
+                            <label class="col-sm-3 control-label">是否启用：</label>
                             <div class="col-sm-8">
-                                <input id="userTitle" name="userTitle" class="form-control" type="text" aria-required="true" aria-invalid="false" >
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">密码：</label>
-                            <div class="col-sm-8">
-                                <input id="password" name="password" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">确认密码：</label>
-                            <div class="col-sm-8">
-                                <input id="confirm_password" name="confirm_password" class="form-control" type="password">
-                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">E-mail：</label>
-                            <div class="col-sm-8">
-                                <input id="userEmail" name="userEmail" class="form-control" type="email">
+                                <input type="checkbox" class="js-switch" checked />
                             </div>
                         </div>
                         <div class="form-group">
@@ -363,10 +349,10 @@
 <script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
 <script type="text/javascript">
     function goSearch() {
-       location.href("/user/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
+       location.href("/tags/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
     }
     function goRefresh(current,pageSize){
-        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
     }
 </script>
 <script type="text/javascript">
@@ -394,7 +380,7 @@
                 });
             }else {
                 $.ajax({
-                    url: "/user/deletes",
+                    url: "/tags/deletes",
                     data:{"ids":ids},
                     type: "post",
                     dataType: "json",
@@ -405,7 +391,7 @@
                                 text: "删除成功",
                                 type: "success"
                             },function () {
-                                location.href("/user/page?current="+1+"&pageSize="+10);
+                                location.href("/tags/page?current="+1+"&pageSize="+10);
                             });
                         } else {
                             swal({
@@ -413,7 +399,7 @@
                                 text: "删除失败",
                                 type: "warning"
                             },function () {
-                                location.href("/user/page?current="+1+"&pageSize="+10);
+                                location.href("/tags/page?current="+1+"&pageSize="+10);
                             });
                         }
                     }
@@ -433,7 +419,7 @@
             closeOnConfirm: false
         },function () {
             $.ajax({
-                url: "/user/delete",
+                url: "/tags/delete",
                 data:{"id":id},
                 type: "post",
                 dataType: "json",
@@ -444,7 +430,7 @@
                             text: "删除成功",
                             type: "success"
                         },function () {
-                            location.href("/user/page?current="+1+"&pageSize="+10);
+                            location.href("/tags/page?current="+1+"&pageSize="+10);
                         });
                     } else {
                         swal({
@@ -452,19 +438,19 @@
                             text: "删除失败",
                             type: "warning"
                         },function () {
-                            location.href("/user/page?current="+1+"&pageSize="+10);
+                            location.href("/tags/page?current="+1+"&pageSize="+10);
                         });
                     }
                 }
             })
         })
     }
-    function addUser(current,pageSize) {
+    function addTags(current,pageSize) {
         var id = $("#userId").val();
         if (id == -1)
             id = null;
         $.ajax({
-            url: "/user/add",
+            url: "/tags/add",
             data:{"userId":id,"userNickname":$("#userNickname").val(),"userTitle":$("#userTitle").val(),
                 "userPassword":$("#password").val(),"userEmail":$("#userEmail")},
             type: "post",
@@ -476,7 +462,7 @@
                         text: "添加成功",
                         type: "success"
                     },function () {
-                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
                     });
                 } else if (data.code == 201){
                     swal({
@@ -484,7 +470,7 @@
                         text: "修改成功",
                         type: "success"
                     },function () {
-                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
                     });
                 } else {
                     swal({
@@ -492,7 +478,7 @@
                         text: "添加失败",
                         type: "warning"
                     },function () {
-                        location.href("/user/page?current="+current+"&pageSize="+pageSize);
+                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
                     });
                 }
             }
@@ -500,4 +486,5 @@
     }
 
 </script>
+
 </html>
