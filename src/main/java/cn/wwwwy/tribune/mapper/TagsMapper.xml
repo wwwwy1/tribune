@@ -8,6 +8,7 @@
         <result column="tags_name" property="tagsName" />
         <result column="tags_remarks" property="tagsRemarks" />
         <result column="tags_count" property="tagsCount" />
+        <result column="tags_enable" property="tagsEnable" />
         <result column="is_deleted" property="isDeleted" />
         <result column="insert_date" property="insertDate" />
         <result column="update_date" property="updateDate" />
@@ -15,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, tags_name, tags_remarks, tags_count, is_deleted, insert_date, update_date
+        id, tags_name, tags_remarks, tags_count, tags_enable, is_deleted, insert_date, update_date
     </sql>
 
 </mapper>

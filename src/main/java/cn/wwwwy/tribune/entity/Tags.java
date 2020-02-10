@@ -46,6 +46,13 @@ import java.time.LocalDateTime;
             */
         @TableField("tags_count")
     private Integer tagsCount;
+    /**
+     * 是否启用,
+     * 1-启用
+     * 0-禁用
+     */
+    @TableField("tags_enable")
+    private Integer tagsEnable;
 
             /**
             * 软删除  0:未删除 1:已删除

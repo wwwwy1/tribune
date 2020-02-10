@@ -28,72 +28,21 @@
             $("#signupForm").validate({
 
                 rules: {
-                    firstname: "required",
-                    lastname: "required",
-                    userName: {
-                        required: true,
-                        minlength: 2
-                    },
-                    password: {
-                        required: function (){
-                            if ($("#userId").val() != -1){
-                                return false;
-                            }else {
-                                return true;
-                            }
-                        },
-                        minlength: 5
-                    },
-                    confirm_password: {
-                        required: function (){
-                            if ($("#userId").val() != -1){
-                                return false;
-                            }else {
-                                return true;
-                            }
-                        },
-                        minlength: 5,
-                        equalTo: "#password"
-                    },
-                    userEmail: {
-                        required:true,
-                        email: true
-                    },
-                    topic: {
-                        required: "#newsletter:checked",
-                        minlength: 2
-                    },
-                    agree: "required"
+                    tagsName: "required",
+                    tagsRemarks: "required"
                 },
                 messages: {
-                    firstname: icon + "请输入你的姓",
-                    lastname: icon + "请输入您的名字",
-                    userName: {
-                        required: icon + "请输入您的用户名",
-                        minlength: icon + "用户名必须两个字符以上"
-                    },
-                    password: {
-                        required:icon + "请输入您的密码",
-                        minlength: icon + "密码必须5个字符以上"
-                    },
-                    confirm_password: {
-                        required:icon + "请输入您的密码",
-                        minlength: icon + "密码必须5个字符以上",
-                        equalTo: icon + "两次输入的密码不一致"
-                    },
-                    userEmail: icon + "请输入您的E-mail",
-                    agree: {
-                        required: icon + "必须同意协议后才能注册",
-                        element: '#agree-error'
-                    }
+                    tagsName: icon + "请输入标签名",
+                    tagsRemarks: icon + "请输入标签的说明"
                 },submitHandler: function (form) {
-                        var id = $("#userId").val();
+                        var id = $("#tagsId").val();
                         if (id == -1)
                             id = null;
+                        var isEnable = 0;
+                        if($('#tagsEnable').prop('checked')) isEnable = 1;
                         $.ajax({
-                            url: "/user/add",
-                            data:{"userId":id,"userName":$("#userName").val(),"userNickname":$("#userNickname").val(),"userTitle":$("#userTitle").val(),
-                                "userPassword":$("#password").val(),"userEmail":$("#userEmail").val()},
+                            url: "/tags/add",
+                            data:{"id":id,"tagsName":$("#tagsName").val(),"tagsRemarks":$("#tagsRemarks").val(),"tagsEnable":isEnable},
                             type: "post",
                             dataType: "json",
                             success: function (data) {
@@ -103,7 +52,7 @@
                                         text: "添加成功",
                                         type: "success"
                                     },function () {
-                                        location.href("/user/page?current="+1+"&pageSize="+10);
+                                        location.href("/tags/page?current="+1+"&pageSize="+10);
                                     });
                                 } else if (data.code == 201){
                                     swal({
@@ -111,28 +60,25 @@
                                         text: "修改成功",
                                         type: "success"
                                     },function () {
-                                        location.href("/user/page?current="+1+"&pageSize="+10);
+                                        location.href("/tags/page?current="+1+"&pageSize="+10);
                                     });
-                                } else {
+                                } else if (data.code == 202){
+                                    swal({
+                                        title: "新增失败",
+                                        text: "标签名重复",
+                                        type: "warning"
+                                    });
+                                }else {
                                     swal({
                                         title: "添加失败",
                                         text: "添加失败",
                                         type: "warning"
                                     },function () {
-                                        location.href("/user/page?current="+1+"&pageSize="+10);
+                                        location.href("/tags/page?current="+1+"&pageSize="+10);
                                     });
                                 }
                             }
                         })
                     }
-            });
-
-            // propose username by combining first- and lastname
-            $("#username").focus(function () {
-                var firstname = $("#firstname").val();
-                var lastname = $("#lastname").val();
-                if (firstname && lastname && !this.value) {
-                    this.value = firstname + "." + lastname;
-                }
             });
         });

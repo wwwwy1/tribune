@@ -19,24 +19,7 @@
     <link th:href="@{/css/style.css?v=4.1.0}" href="css/style.css?v=4.1.0" rel="stylesheet">
     <link th:href="@{/js/plugins/fancybox/jquery.fancybox.css}" rel="stylesheet">
     <link th:href="@{/css/plugins/switchery/switchery.css}" rel="stylesheet">
-
-    <script th:src="@{/js/switchDdd.js}"></script>
-    <style>
-        #js1 {
-            font-family: 'Open Sans', sans-serif;
-            vertical-align: middle;
-            color: red;
-        }
-    </style>
-    <script>
-        function captureTheChangeEvent(self, event) {
-            if (self.checked) {
-                document.getElementById('js1').style.color = 'green';
-            } else {
-                document.getElementById('js1').style.color = 'red';
-            }
-        }
-    </script>
+    <script th:src="@{/js/plugins/chosen/chosen.jquery.js}"></script>
 </head>
 
 <body class="gray-bg">
@@ -51,17 +34,16 @@
                         <h4 class="example-title">标签管理</h4>
                         <div class="example">
                             <div class="bootstrap-table">
-                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。<br/>
-                                    或是感动，或是开心，有或是单纯的回忆。来到这里，留下你所喜欢的那一句句话，与大家分享，这就是一言存在的目的。
+                                <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">Tag的意义不仅在于分类，更在于它可以体现出用户各人的思想、生活和感情。
+                                    <br/>比如，去年你去北京旅游，有你和家人旅游火车中的照片，你也可以将它以北京标识。以后，当你看到这张并不是北京的照片的时候，可以想到你在北京的旅游。
+
                                 </div>
-                                <jelly-switch id="js1"  onToggle="return captureTheChangeEvent(this,event)" right-value="Ek Hee Raasta">
-                                </jelly-switch>
                                 <div class="bootstrap-table">
                                     <div class="fixed-table-toolbar">
                                         <div class="bars pull-left">
                                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar"
                                                  role="group">
-                                                <button id="addUser" type="button" class="btn btn-outline btn-default" onclick="goWord()">
+                                                <button id="addTags" type="button" class="btn btn-outline btn-default" onclick="goWord()">
                                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-outline btn-default">
@@ -110,6 +92,10 @@
                                                         <div class="th-inner ">使用次数</div>
                                                         <div class="fht-cell"></div>
                                                     </th>
+                                                    <th style="" data-field="tagsEnable" tabindex="0">
+                                                        <div class="th-inner ">是否启用</div>
+                                                        <div class="fht-cell"></div>
+                                                    </th>
                                                     <th style="" data-field="insertDate" tabindex="0">
                                                         <div class="th-inner ">插入时间</div>
                                                         <div class="fht-cell"></div>
@@ -130,6 +116,7 @@
                                                                                    type="checkbox"></td>
                                                     <td style=""th:text="${data.tagsName}">测试0</td>
                                                     <td style=""th:text="${data.tagsCount}">测试0</td>
+                                                    <td style=""th:text="${data.tagsEnable}==1?'启用':'禁用'">测试0</td>
                                                     <td style=""th:text="${#temporals.format(data.insertDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
                                                     <td style=""th:text="${#temporals.format(data.updateDate,'yyyy-MM-dd HH:mm:ss')}">¥0</td>
                                                     <td style="" align="center">
@@ -160,24 +147,24 @@
                                                     data-toggle="dropdown"><span class="page-size" th:text="${data.page.pageSize}">10</span> <span
                                                     class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                 <li class="active" th:if="${data.page.pageSize} eq 10"><a href="javascript:void(0)" >10</a></li>
-                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/user/page?current=' + 1 + '&pageSize=10'" >10</a></li>
+                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/tags/page?current=' + 1 + '&pageSize=10'" >10</a></li>
                                                 <li class="active" th:if="${data.page.pageSize} eq 25"><a href="javascript:void(0)">25</a></li>
-                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/user/page?current=' + 1 + '&pageSize=25'">25</a></li>
+                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/tags/page?current=' + 1 + '&pageSize=25'">25</a></li>
                                             </ul></span> 条记录</span></div>
                                             <div class="pull-right pagination">
                                                 <ul class="pagination pagination-outline">
-                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/user/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/tags/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/user/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/tags/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/user/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">‹</a>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/tags/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">‹</a>
                                                     </li>
                                                     <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
                                                     </li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
                                                     <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
-                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/tags/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/user/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/tags/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/tags/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline">
                                                     <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
@@ -259,35 +246,31 @@
 </script>
 <script type="text/javascript">
     function goWord() {
-        $('#modalTitle').text("新增用户");
-        $('#userId').val("-1");
-        $('#password').val("");
-        $('#confirm_password').val("");
-        $('#userTitle').val("");
-        $('#userEmail').val("");
-        $('#userName').val("");
-        $('#userName').attr("readonly",false);
-        $('#userNickname').val("");
+        $('#modalTitle').text("新增标签");
+        $('#tagsId').val("-1");
+        $('#tagsName').val("");
+        $('#tagsRemarks').val("");
         $('#myModal4').modal();
     }
+    function setSwitchery(switchElement, checkedBool) {
+        if((checkedBool && !switchElement.isChecked()) || (!checkedBool && switchElement.isChecked())) {
+            switchElement.setPosition(true);
+            switchElement.handleOnchange(true);
+        }
+    }
     function goUpdate(id){
-        $('#hiddenId').val(id);
+        $('#tagsId').val(id);
         $.ajax({
             url: "/tags/getById",
             data:{"id":id},
             type: "get",
             dataType: "json",
             success: function (data) {
-                $('#modalTitle').text("修改用户");
+                $('#modalTitle').text("修改标签");
                 $('#contentWord').val(data.content);
-                $('#userId').val(data.Id);
-                $('#password').val("");
-                $('#confirm_password').val("");
-                $('#userTitle').val(data.userTitle);
-                $('#userEmail').val(data.userEmail);
-                $('#userName').val(data.userName);
-                $('#userName').attr("readonly","readonly");
-                $('#userNickname').val(data.userNickname);
+                $('#tagsRemarks').val(data.tagsRemarks);
+                $('#tagsName').val(data.tagsName);
+                $('#tagsName').attr("readonly","readonly");
             }
         })
         $('#myModal4').modal();
@@ -307,27 +290,20 @@
                             <label class="col-sm-3 control-label">标签名：</label>
                             <div class="col-sm-8">
                                 <input id="tagsName" name="tagsName" class="form-control" type="text">
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 用于展示,不可修改</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">备注：</label>
                             <div class="col-sm-8">
                                 <textarea id="tagsRemarks" name="tagsRemarks" class="form-control" required="" aria-required="true"></textarea>
+                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 对于标签的说明性文字</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">是否启用：</label>
                             <div class="col-sm-8">
-                                <input type="checkbox" class="js-switch" checked />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-8 col-sm-offset-3">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" class="checkbox" id="agree" name="agree"> 我已经认真阅读并同意《Y使用协议》
-                                    </label>
-                                </div>
+                                <input id="tagsEnable" type="checkbox" class="js-switch" checked />
                             </div>
                         </div>
                         <div class="form-group">
@@ -354,6 +330,7 @@
     function goRefresh(current,pageSize){
         location.href("/tags/page?current="+current+"&pageSize="+pageSize);
     }
+
 </script>
 <script type="text/javascript">
     function goDeletes() {
@@ -445,46 +422,47 @@
             })
         })
     }
-    function addTags(current,pageSize) {
-        var id = $("#userId").val();
-        if (id == -1)
-            id = null;
-        $.ajax({
-            url: "/tags/add",
-            data:{"userId":id,"userNickname":$("#userNickname").val(),"userTitle":$("#userTitle").val(),
-                "userPassword":$("#password").val(),"userEmail":$("#userEmail")},
-            type: "post",
-            dataType: "json",
-            success: function (data) {
-                if (data.code == 200){
-                    swal({
-                        title: "添加成功",
-                        text: "添加成功",
-                        type: "success"
-                    },function () {
-                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
-                    });
-                } else if (data.code == 201){
-                    swal({
-                        title: "修改成功",
-                        text: "修改成功",
-                        type: "success"
-                    },function () {
-                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
-                    });
-                } else {
-                    swal({
-                        title: "添加失败",
-                        text: "添加失败",
-                        type: "warning"
-                    },function () {
-                        location.href("/tags/page?current="+current+"&pageSize="+pageSize);
-                    });
-                }
-            }
-        })
-    }
 
 </script>
 
+<!-- Chosen -->
+<script th:src="@{/js/plugins/chosen/chosen.jquery.js}"></script>
+
+<!-- JSKnob -->
+<script th:src="@{/js/plugins/jsKnob/jquery.knob.js}"></script>
+
+<!-- Input Mask-->
+<script th:src="@{/js/plugins/jasny/jasny-bootstrap.min.js}"></script>
+
+<!-- Data picker -->
+<script th:src="@{/js/plugins/datapicker/bootstrap-datepicker.js}"></script>
+
+<!-- Prettyfile -->
+<script th:src="@{/js/plugins/prettyfile/bootstrap-prettyfile.js}"></script>
+
+<!-- NouSlider -->
+<script th:src="@{/js/plugins/nouslider/jquery.nouislider.min.js}"></script>
+
+<!-- Switchery -->
+<script th:src="@{/js/plugins/switchery/switchery.js}"></script>
+
+<!-- IonRangeSlider -->
+<script th:src="@{/js/plugins/ionRangeSlider/ion.rangeSlider.min.js}"></script>
+
+<!-- iCheck -->
+<script th:src="@{/js/plugins/iCheck/icheck.min.js}"></script>
+
+<!-- MENU -->
+<script th:src="@{/js/plugins/metisMenu/jquery.metisMenu.js}"></script>
+
+<!-- Color picker -->
+<script th:src="@{/js/plugins/colorpicker/bootstrap-colorpicker.min.js}"></script>
+
+<!-- Clock picker -->
+<script th:src="@{/js/plugins/clockpicker/clockpicker.js}"></script>
+
+<!-- Image cropper -->
+<script th:src="@{/js/plugins/cropper/cropper.min.js}"></script>
+
+<script th:src="@{/js/demo/form-advanced-demo.js}"></script>
 </html>

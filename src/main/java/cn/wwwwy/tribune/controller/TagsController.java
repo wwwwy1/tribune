@@ -37,6 +37,10 @@ public class TagsController extends BaseController {
 	@PostMapping(value = "add")
 	public Result insertTags(Tags tags){
 		if (tags.getId()==null){
+			QueryWrapper<Tags> queryWrapper = new QueryWrapper<>();
+			queryWrapper.eq("tags_name",tags.getTagsName());
+			Tags one = iTagsService.getOne(queryWrapper);
+			if (one!=null)return new Result("失败,标签名重复",202,tags);
 			iTagsService.save(tags);
 			return new Result("成功",200,tags);
 		}
