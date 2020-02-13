@@ -10,5 +10,6 @@ public class MyPicConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/images/user/**").addResourceLocations("file:F:\\eimg\\user\\");
+		registry.addResourceHandler("/images/ceshi/**").addResourceLocations("file:F:\\eimg\\ceshi\\");
 	}
 }
