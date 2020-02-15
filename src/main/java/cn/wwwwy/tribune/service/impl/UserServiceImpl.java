@@ -71,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 		}
 		userMapper.insert(user);
 		log.info("UserServiceImpl-register: user" + user);
-		return new Result("注册成功",0,null);
+		return new Result("注册成功",200,null);
 	}
 
 	public Boolean checkEmail(String email) {

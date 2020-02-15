@@ -93,12 +93,19 @@ public class UserController extends BaseController {
 	@PostMapping(value = "add")
 	public Result insertUser(User user){
 		if (user.getId()==null){
-			iUserService.save(user);
-			return new Result("成功",200,user);
+			Result register = iUserService.register(user);
+			return register;
 		}
 		else{
 			iUserService.updateById(user);
 			return new Result("成功",201,user);
 		}
+	}
+	@PostMapping(value = "checkName")
+	public Boolean checkName(String userName){
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("user_name",userName);
+		int count = iUserService.count(queryWrapper);
+		return count!=0;
 	}
 }
