@@ -30,7 +30,7 @@
                 <div class="col-sm-12">
                     <!-- Example Events -->
                     <div class="example-wrap">
-                        <h4 class="example-title">每日一言</h4>
+                        <h4 class="example-title">敏感词管理</h4>
                         <div class="example">
                             <div class="bootstrap-table">
                                 <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">简单来说，一言指的就是一句话，可以是动漫中的台词，也可以是网络上的各种小段子。<br/>
@@ -136,31 +136,80 @@
                                                     data-toggle="dropdown"><span class="page-size" th:text="${data.page.pageSize}">10</span> <span
                                                     class="caret"></span></button><ul class="dropdown-menu" role="menu">
                                                 <li class="active" th:if="${data.page.pageSize} eq 10"><a href="javascript:void(0)" >10</a></li>
-                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/dailyWord/page?current=' + 1 + '&pageSize=10'" >10</a></li>
+                                                <li th:if="${data.page.pageSize} ne 10"><a th:href="'/sensitiveWords/page?current=' + 1 + '&pageSize=10'" >10</a></li>
                                                 <li class="active" th:if="${data.page.pageSize} eq 25"><a href="javascript:void(0)">25</a></li>
-                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/dailyWord/page?current=' + 1 + '&pageSize=25'">25</a></li>
+                                                <li th:if="${data.page.pageSize} ne 25"><a th:href="'/sensitiveWords/page?current=' + 1 + '&pageSize=25'">25</a></li>
                                             </ul></span> 条记录</span></div>
-                                            <div class="pull-right pagination">
+                                            <div class="pull-right pagination" th:if="${data.page.pages &gt; 10}">
                                                 <ul class="pagination pagination-outline">
-                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/sensitiveWords/page?current=' + '1' +'&keyWords='+${keyWords} + '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + '1' + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">«</a>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/sensitiveWords/page?current=' + '1' +'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
                                                     </li>
-                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum - 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">‹</a>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pageNum - 1} + '&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">‹</a>
+                                                    </li>
+                                                    <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
+                                                    </li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline" th:if="${data.page.pageNum &lt; 5}" th:each="pageNum:${#numbers.sequence(1,5)}">
+                                                    <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/sensitiveWords/page?current='+ ${pageNum}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${pageNum}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline" th:if="${data.page.pageNum &lt; 5}">
+                                                    <li class="page-number" ><a href="javascript:void(0)">...</a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pages}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pages}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline" th:if="${data.page.pageNum &gt; data.page.pages-4}">
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current=1&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" >1</a></li>
+                                                    <li class="page-number" ><a href="javascript:void(0)">...</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline" th:if="${data.page.pageNum &gt; data.page.pages-4}" th:each="pageNum:${#numbers.sequence(data.page.pages-4,data.page.pages)}">
+                                                    <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/sensitiveWords/page?current='+ ${pageNum}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${pageNum}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline" th:if="${data.page.pageNum &gt; 4 and data.page.pageNum &lt; data.page.pages-3}">
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current=1&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="1">pageNum</a></li>
+                                                    <li class="page-number" ><a href="javascript:void(0)">...</a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pageNum-2}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pageNum-2}">pageNum</a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pageNum-1}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pageNum-1}">pageNum</a></li>
+                                                    <li class="page-number active" ><a href="javascript:void(0)" th:text="${data.page.pageNum}"></a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pageNum+1}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pageNum+1}">pageNum</a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pageNum+2}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pageNum+2}">pageNum</a></li>
+                                                    <li class="page-number" ><a href="javascript:void(0)">...</a></li>
+                                                    <li class="page-number"><a th:href="'/sensitiveWords/page?current='+ ${data.page.pages}+'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${data.page.pages}">pageNum</a></li>
+                                                </ul>
+                                                <ul class="pagination pagination-outline">
+                                                    <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pageNum + 1} + '&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">›</a>
+                                                    </li>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pages} +'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">»</a>
+                                                    </li>
+                                                    <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="pull-right pagination" th:if="${data.page.pages &lt; 11 and data.page.pages &gt; 1}">
+                                                <ul class="pagination pagination-outline">
+                                                    <li class="page-first disabled" th:if="${data.page.pageNum eq 1}"><a th:href="'/sensitiveWords/page?current=' + '1' +'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize} " href="javascript:void(0)">«</a>
+                                                    </li>
+                                                    <li class="page-first " th:if="${data.page.pageNum ne 1}"><a th:href="'/sensitiveWords/page?current=' + '1' +'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">«</a>
+                                                    </li>
+                                                    <li class="page-pre " th:if="${data.page.pageNum ne 1}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pageNum - 1} + '&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">‹</a>
                                                     </li>
                                                     <li class="page-pre disabled" th:if="${data.page.pageNum eq 1}"><a  href="javascript:void(0)">‹</a>
                                                     </li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline"th:each="pageNum:${#numbers.sequence(1, data.page.pages)}">
                                                     <li class="page-number active" th:if="${pageNum eq data.page.pageNum}"  ><a href="javascript:void(0)" th:text="${pageNum}">pageNum</a></li>
-                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/dailyWord/page?current=' + ${pageNum} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="/dailyWord/page?current=1&pageSize=10" th:text="${pageNum}">pageNum</a></li>
+                                                    <li class="page-number" th:if="${pageNum ne data.page.pageNum}" ><a th:href="'/sensitiveWords/page?current=' + ${pageNum} + '&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" th:text="${pageNum}">pageNum</a></li>
                                                 </ul>
                                                 <ul class="pagination pagination-outline">
                                                     <li class="page-next disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pageNum + 1} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">›</a>
+                                                    <li class="page-next " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pageNum + 1} + '&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">›</a>
                                                     </li>
-                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/dailyWord/page?current=' + ${data.page.pages} + '&pageSize='+${data.page.pageSize}+'&keyWords='+${keyWords}" href="javascript:void(0)">»</a>
+                                                    <li class="page-last " th:if="${data.page.pageNum} ne ${data.page.pages}"><a th:href="'/sensitiveWords/page?current=' + ${data.page.pages} +'&keyWords='+${keyWords}+ '&pageSize='+${data.page.pageSize}" href="javascript:void(0)">»</a>
                                                     </li>
                                                     <li class="page-last disabled" th:if="${data.page.pageNum} eq ${data.page.pages}"><a  href="javascript:void(0)">»</a>
                                                     </li>
@@ -218,13 +267,13 @@
     function goWord() {
         $('#hiddenId').val("-1");
         $('#contentWord').val("");
-        $('#subButton').val("确认新增");
+        $("#subButton").val("确认新增");
         $('#myModal4').modal();
     }
     function goUpdate(id){
         $('#hiddenId').val(id);
         $.ajax({
-            url: "/dailyWord/getById",
+            url: "/sensitiveWords/getById",
             data:{"id":id},
             type: "get",
             dataType: "json",
@@ -232,7 +281,7 @@
                 $('#contentWord').val(data.content);
             }
         })
-        $('#subButton').val("确认修改");
+        $("#subButton").val("确认修改");
         $('#myModal4').modal();
     }
 </script>
@@ -241,12 +290,12 @@
         <div class="modal-content news-w3l">
             <div class="modal-header">
                 <button type="button" class="close w3l" data-dismiss="modal">&times;</button>
-                <h4>每日一言</h4>
+                <h4>敏感词</h4>
                 <!--newsletter-->
                 <input hidden="hidden" id="hiddenId" value="" />
                 <div class="login-main wthree">
-                    <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入您喜欢的句子或格言/鸡汤"></textarea>
-                    <input type="submit" id="subButton" onclick="addDailyWord()" th:onclick="'javascript:addDailyWord('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
+                    <textarea id="contentWord" style="border:0;border-radius:5px;background-color:rgba(241,241,241,.98);width: 355px;height: 100px;margin-left: 50px;padding: 10px;resize: none;" placeholder="您可以输入需要屏蔽的敏感词"></textarea>
+                    <input type="submit" id="subButton" onclick="addSensitiveWords()" th:onclick="'javascript:addSensitiveWords('+${data.page.pageNum}+','+${data.page.pageSize}+')'" value="确认增加">
                 </div>
                 <!--//newsletter-->
             </div>
@@ -257,10 +306,10 @@
 </body>
 <script type="text/javascript">
     function goSearch() {
-       location.href("/dailyWord/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
+       location.href("/sensitiveWords/page?current="+1+"&pageSize="+10+"&keyWords="+$('#searchKeyWords').val());
     }
     function goRefresh(current,pageSize){
-        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+        location.href("/sensitiveWords/page?current="+current+"&pageSize="+pageSize);
     }
 </script>
 <link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
@@ -291,7 +340,7 @@
                 });
             }else {
                 $.ajax({
-                    url: "/dailyWord/deletes",
+                    url: "/sensitiveWords/deletes",
                     data:{"ids":ids},
                     type: "post",
                     dataType: "json",
@@ -302,7 +351,7 @@
                                 text: "删除成功",
                                 type: "success"
                             },function () {
-                                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                                location.href("/sensitiveWords/page?current="+1+"&pageSize="+10);
                             });
                         } else {
                             swal({
@@ -310,7 +359,7 @@
                                 text: "删除失败",
                                 type: "warning"
                             },function () {
-                                location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                                location.href("/sensitiveWords/page?current="+1+"&pageSize="+10);
                             });
                         }
                     }
@@ -330,7 +379,7 @@
             closeOnConfirm: false
         },function () {
             $.ajax({
-                url: "/dailyWord/delete",
+                url: "/sensitiveWords/delete",
                 data:{"id":id},
                 type: "post",
                 dataType: "json",
@@ -341,7 +390,7 @@
                             text: "删除成功",
                             type: "success"
                         },function () {
-                            location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                            location.href("/sensitiveWords/page?current="+1+"&pageSize="+10);
                         });
                     } else {
                         swal({
@@ -349,20 +398,20 @@
                             text: "删除失败",
                             type: "warning"
                         },function () {
-                            location.href("/dailyWord/page?current="+1+"&pageSize="+10);
+                            location.href("/sensitiveWords/page?current="+1+"&pageSize="+10);
                         });
                     }
                 }
             })
         })
     }
-    function addDailyWord(current,pageSize) {
+    function addSensitiveWords(current,pageSize) {
         var contentWord = $("#contentWord").val();
         var id = $("#hiddenId").val();
         if (id == -1)
             id = null;
         $.ajax({
-            url: "/dailyWord/add",
+            url: "/sensitiveWords/add",
             data:{"content":contentWord,"id":id},
             type: "post",
             dataType: "json",
@@ -373,7 +422,7 @@
                         text: "添加成功",
                         type: "success"
                     },function () {
-                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                        location.href("/sensitiveWords/page?current="+current+"&pageSize="+pageSize);
                     });
                 } else if (data.code == 201){
                     swal({
@@ -381,15 +430,13 @@
                         text: "修改成功",
                         type: "success"
                     },function () {
-                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
+                        location.href("/sensitiveWords/page?current="+current+"&pageSize="+pageSize);
                     });
                 } else {
                     swal({
                         title: "添加失败",
-                        text: "添加失败",
+                        text: "添加失败,名称不能重复",
                         type: "warning"
-                    },function () {
-                        location.href("/dailyWord/page?current="+current+"&pageSize="+pageSize);
                     });
                 }
             }
